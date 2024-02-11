@@ -1,0 +1,14 @@
+$bottomBarHeight: 70px;
+
+.container {
+  height: 100%;
+
+  .content {
+    height: calc(100% - $bottomBarHeight);
+    background-color: dodgerblue;
+  }
+
+  .bottomBar {
+    height: $bottomBarHeight;
+  }
+}
