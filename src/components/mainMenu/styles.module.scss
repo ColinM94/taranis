@@ -1,0 +1,45 @@
+.container {
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: vars.$spacing-primary * 2;
+  background-color: dodgerblue;
+
+  * {
+    // outline: 1px solid red;
+  }
+
+  .gameName {
+    flex: 1;
+    font-size: min(25vw, 15rem);
+    align-items: center;
+  }
+
+  .buttons {
+    flex: 1;
+    gap: vars.$spacing-primary;
+    width: 300px;
+
+    .button {
+      justify-content: center;
+      align-items: center;
+      border-radius: vars.$roundness;
+      font-size: vars.$font-size-display;
+      cursor: pointer;
+      padding: vars.$spacing-primary;
+
+      &:active {
+        scale: 0.9;
+      }
+    }
+  }
+
+  .copyright {
+    flex: 0.75;
+    padding: vars.$spacing-primary;
+    font-size: vars.$font-size-h1;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}

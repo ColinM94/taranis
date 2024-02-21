@@ -1,0 +1,89 @@
+@font-face {
+  font-family: "VT323";
+  src: url("assets/fonts/VT323-Regular.ttf");
+}
+
+head {
+  display: none;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  box-sizing: border-box;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+  font-size: 62.5%;
+  font-style: inherit;
+  font-variant: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  vertical-align: baseline;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+html,
+#root,
+body {
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+img,
+image,
+svg {
+  max-width: 100%;
+}
+
+body {
+  font-family: "VT323", Calibri, "Trebuchet MS", sans-serif;
+  color: vars.$color-text-primary;
+  background-color: vars.$color-background;
+  line-height: 1.2;
+  font-size: 1rem;
+}
+
+h1 {
+  font-size: vars.$font-size-h1;
+}
+
+h2 {
+  font-size: vars.$font-size-h2;
+}
+
+h3 {
+  font-size: vars.$font-size-h3;
+}
+
+h4,
+h5,
+h6,
+p,
+div,
+span {
+  font-size: vars.$font-size-body;
+}
+
+a {
+  font-size: vars.$font-size-body;
+  text-decoration: none;
+  color: vars.$color-primary;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+option {
+  font-size: vars.$font-size-body;
+}

@@ -1,0 +1,35 @@
+.container {
+  .buttonInfo {
+    font-size: vars.$font-size-h1;
+  }
+
+  .controls {
+    gap: vars.$spacing-primary;
+
+    .controlItem {
+      flex-direction: row;
+      border-radius: vars.$roundness;
+      overflow: hidden;
+      max-width: 500px;
+      cursor: pointer;
+
+      .controlItemLabel {
+        flex: 1;
+        flex-direction: row;
+        background-color: #1a293c;
+        padding: vars.$spacing-primary;
+        align-items: center;
+      }
+
+      .controlItemValue {
+        flex: 1;
+        background-color: #2a2f35;
+        padding: vars.$spacing-primary;
+      }
+    }
+
+    .selectedControlItem {
+      outline: 1px solid vars.$color-primary;
+    }
+  }
+}

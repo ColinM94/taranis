@@ -1,0 +1,24 @@
+.container {
+  height: 100%;
+  width: 100%;
+  border-radius: vars.$roundness;
+  padding: vars.$spacing-primary;
+
+  .game {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: vars.$roundness;
+  }
+
+  .ui {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: vars.$roundness;
+  }
+}

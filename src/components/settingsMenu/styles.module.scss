@@ -1,0 +1,19 @@
+.container {
+  background-color: vars.$color-surface;
+  height: 100%;
+  width: 100%;
+  padding: vars.$spacing-primary;
+
+  .backButton {
+    cursor: pointer;
+  }
+
+  .backButtonLabel {
+    font-size: vars.$font-size-display;
+  }
+
+  .title {
+    text-align: center;
+    font-size: 50px;
+  }
+}

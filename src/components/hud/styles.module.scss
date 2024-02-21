@@ -1,0 +1,29 @@
+.hud {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 30%;
+  height: 50px;
+  background-color: orange;
+  border-radius: vars.$roundness;
+  font-size: 50px;
+  align-items: center;
+  justify-content: center;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.hud2 {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30%;
+  height: 50px;
+  background-color: orange;
+  border-radius: vars.$roundness;
+  font-size: 50px;
+  align-items: center;
+  justify-content: center;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
