@@ -2,13 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 
 import { Hud, PauseMenu, SettingsMenu } from "components";
-import {
-  KeyBind,
-  KeyBindsState,
-  useControlsStore,
-  useGameStore,
-  useKeyBindsStore,
-} from "store";
+import { useGameStore, useKeyBindsStore } from "store";
 
 import { Game } from "./game";
 
@@ -16,23 +10,33 @@ import "styles/global.scss";
 import styles from "./styles/main.module.scss";
 
 const Main = () => {
-  const { setIsPaused } = useGameStore();
   const { showSettingsMenu, showHud, isPaused } = useGameStore();
 
   const keyBinds = useKeyBindsStore();
 
-  const {
-    setDPadLeft,
-    setDPadUp,
-    setDPadRight,
-    setDPadDown,
-    setAPressed,
-    setBPressed,
-    setXPressed,
-    setYPressed,
-    setStartPressed,
-    setPressedButtons,
-  } = useControlsStore();
+  const controllerBindsMap = React.useMemo(() => {
+    const map = new Map<number, keyof KeyBinds>();
+    const keys = Object.keys(keyBinds) as (keyof KeyBinds)[];
+
+    for (const key of keys) {
+      const keyBind = keyBinds[key];
+      map.set(keyBind.controllerButton, key);
+    }
+
+    return map;
+  }, [keyBinds]);
+
+  const keyboardBindsMap = React.useMemo(() => {
+    const map = new Map<string, keyof KeyBinds>();
+    const keys = Object.keys(keyBinds) as (keyof KeyBinds)[];
+
+    for (const key of keys) {
+      const keyBind = keyBinds[key];
+      map.set(keyBind.keyboardKey, key);
+    }
+
+    return map;
+  }, [keyBinds]);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -40,23 +44,17 @@ const Main = () => {
 
       if (!controller) return;
 
-      setAPressed(controller.buttons[0].pressed);
-      setBPressed(controller.buttons[1].pressed);
-      setXPressed(controller.buttons[2].pressed);
-      setYPressed(controller.buttons[3].pressed);
+      for (const button of controller.buttons) {
+        const key = button.value;
 
-      setPressedButtons(
-        controller.buttons
-          .map((button, index) => index)
-          .filter((index) => controller.buttons[index].pressed)
-      );
+        if (controllerBindsMap.has(key)) {
+          const action = controllerBindsMap.get(key);
 
-      setStartPressed(controller.buttons[9].pressed);
+          if (!action) return;
 
-      setDPadDown(controller.buttons[13].pressed);
-      setDPadUp(controller.buttons[12].pressed);
-      setDPadLeft(controller.buttons[14].pressed);
-      setDPadRight(controller.buttons[15].pressed);
+          keyBinds.setIsPressed(action, button.pressed);
+        }
+      }
     }, 25);
 
     return () => {
@@ -64,37 +62,15 @@ const Main = () => {
     };
   }, []);
 
-  const keyboardBindsMap = React.useMemo(() => {
-    const map = new Map<string, string>();
-    const keys = Object.keys(keyBinds) as (keyof KeyBindsState)[];
-
-    for (const key of keys) {
-      const keyBind: KeyBind = keyBinds[key];
-
-      if (keyBind.keyboardKey) {
-        map.set(keyBind.keyboardKey, key);
-      }
-    }
-
-    return map;
-  }, [keyBinds]);
-
   const handleKeyDown = (event: KeyboardEvent) => {
     const key = event.key;
 
     if (keyboardBindsMap.has(key)) {
       const action = keyboardBindsMap.get(key);
-      console.log(action);
 
-      // TODO: trigger callbacks.
+      if (!action) return;
 
-      if (action === "moveLeft") {
-        keyBinds.onMoveLeftCallback();
-      }
-
-      if (action === "moveRight") {
-        keyBinds.onMoveRightCallback();
-      }
+      keyBinds.setIsPressed(action, true);
     }
   };
 
@@ -104,12 +80,9 @@ const Main = () => {
     if (keyboardBindsMap.has(key)) {
       const action = keyboardBindsMap.get(key);
 
-      if (action === "moveLeft") {
-      }
+      if (!action) return;
 
-      if (action === "moveRight") {
-        keyBinds.onMoveRightCallback();
-      }
+      keyBinds.setIsPressed(action, false);
     }
   };
 
@@ -126,6 +99,8 @@ const Main = () => {
   return (
     <div className={styles.container}>
       <Game className={styles.game} />
+
+      <div>{JSON.stringify(keyBinds)}</div>
 
       <div className={styles.ui}>
         {/* {showMainMenu && <MainMenu />} */}

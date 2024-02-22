@@ -8,9 +8,14 @@ import {
 import { SetStoreState } from "./types";
 import { getStoreData, removeStoreData, setStoreData } from "./persistStorage";
 
+type Set<T> = (
+  partial: T | Partial<T> | ((state: T) => T | Partial<T>),
+  replace?: boolean | undefined
+) => void;
+
 interface Config<T> extends Omit<PersistOptions<T>, "partialize"> {
   name: string;
-  data: (set: SetStoreState<T>) => T;
+  data: (set: Set<T>) => T;
   /** Store state in local storage */
   persistState?: boolean;
   // partialize?: (state: T) => Partial<T>;

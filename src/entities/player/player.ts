@@ -36,23 +36,23 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   initControls(scene: Phaser.Scene) {
     if (!scene?.input.keyboard) return;
 
-    this.keyW = scene.input.keyboard?.addKey("W");
-    this.keyS = scene.input.keyboard?.addKey("S");
-    this.keyA = scene.input.keyboard?.addKey("A");
-    this.keyD = scene.input.keyboard?.addKey("D");
-    this.keyQ = scene.input.keyboard?.addKey("Q");
-    this.keyE = scene.input.keyboard?.addKey("E");
-    this.KeySpace = scene.input.keyboard?.addKey("SPACE");
+    // this.keyW = scene.input.keyboard?.addKey("W");
+    // this.keyS = scene.input.keyboard?.addKey("S");
+    // this.keyA = scene.input.keyboard?.addKey("A");
+    // this.keyD = scene.input.keyboard?.addKey("D");
+    // this.keyQ = scene.input.keyboard?.addKey("Q");
+    // this.keyE = scene.input.keyboard?.addKey("E");
+    // this.KeySpace = scene.input.keyboard?.addKey("SPACE");
 
-    keyBinds.setMoveLeftCallback(() => {
-      this.setVelocityX(-225);
-      this.flipX = true;
-    });
+    // keyBinds.setMoveLeftCallback(() => {
+    //   this.setVelocityX(-225);
+    //   this.flipX = true;
+    // });
 
-    keyBinds.setMoveRightCallback(() => {
-      this.setVelocityX(225);
-      this.flipX = false;
-    });
+    // keyBinds.setMoveRightCallback(() => {
+    //   this.setVelocityX(225);
+    //   this.flipX = false;
+    // });
   }
 
   update() {
