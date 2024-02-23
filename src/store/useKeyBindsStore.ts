@@ -3,7 +3,7 @@ import { createZustandStore } from "./createZustandStore";
 export interface KeyBind {
   keyboardKey: string;
   controllerButton: number;
-  isPressed?: boolean;
+  label: string;
 }
 
 export interface KeyBinds {
@@ -16,44 +16,43 @@ export interface KeyBinds {
 }
 
 export interface KeyBindsState extends KeyBinds {
-  setKeyBind: (key: keyof KeyBindsState, value: KeyBind) => void;
-  setIsPressed: (key: keyof KeyBinds, value: boolean) => void;
+  updateKeyBind: (key: keyof KeyBinds, value: KeyBind) => void;
 }
 
 export const useKeyBindsStore = createZustandStore<KeyBindsState>({
-  name: "keyBindings",
+  name: "keyBinds",
   data: (set) => ({
     moveLeft: {
       keyboardKey: "a",
       controllerButton: 14,
+      label: "Move Left",
     },
     moveRight: {
       keyboardKey: "d",
       controllerButton: 15,
+      label: "Move Right",
     },
     jump: {
       keyboardKey: " ",
       controllerButton: 0,
-      isPressed: false,
+      label: "Jump",
     },
     attack: {
       keyboardKey: "q",
       controllerButton: 1,
-      isPressed: false,
+      label: "Attack",
     },
     attackSecondary: {
       keyboardKey: "r",
       controllerButton: 2,
-      isPressed: false,
+      label: "Secondary Attack",
     },
     attackTertiary: {
       keyboardKey: "e",
       controllerButton: 3,
-      isPressed: false,
+      label: "Tertiary Attack",
     },
-    setIsPressed: (key, value) =>
-      set((state) => ({ [key]: { ...state[key], isPressed: value } })),
-    setKeyBind: (key, value) => set({ [key]: value }),
+    updateKeyBind: (key, value) =>
+      set((state) => ({ [key]: { ...state[key], ...value } })),
   }),
-  persistState: true,
 });

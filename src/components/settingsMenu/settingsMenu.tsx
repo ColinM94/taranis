@@ -1,11 +1,14 @@
-import { useGameStore } from "store";
+import { useGameStore, useKeyBindsStore, useKeys } from "store";
+import { navigate } from "utils";
 
 import styles from "./styles.module.scss";
-import { navigate } from "utils";
-import { SettingsController } from "./components/settingsController/settingsController";
+import { SettingsControls } from "./components/settingsControls/settingsControls";
 
 export const SettingsMenu = () => {
+  const keyBinds = useKeyBindsStore();
   const { showSettingsMenu } = useGameStore();
+
+  const keys = useKeys();
 
   if (!showSettingsMenu) return null;
 
@@ -19,7 +22,26 @@ export const SettingsMenu = () => {
         <div className={styles.backButtonLabel}>X</div>
       </div>
       <div className={styles.title}>Settings</div>
-      <SettingsController />
+
+      {/* {Object.keys(keys).map((key) => {
+        return (
+          <div key={key}>
+            {key} {keys[key] ? "pressed" : "not pressed"}
+          </div>
+        );
+      })}
+
+{Object.keys(keys).map((key) => {
+        return (
+          <div key={key}>
+            {key} {keys[key] ? "pressed" : "not pressed"}
+          </div>
+        );
+      })} */}
+
+      {/* <SettingsController /> */}
+
+      <SettingsControls />
     </div>
   );
 };
