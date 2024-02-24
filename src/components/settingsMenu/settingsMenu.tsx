@@ -1,14 +1,13 @@
-import { useGameStore, useKeyBindsStore, useKeys } from "store";
+import { useGameStore } from "store";
 import { navigate } from "utils";
 
+import { SettingsKeybinds } from "./components/settingsKeybinds/settingsKeybinds";
+import { SettingsControllers } from "./components/settingsControllers/settingsControllers";
+
 import styles from "./styles.module.scss";
-import { SettingsControls } from "./components/settingsControls/settingsControls";
 
 export const SettingsMenu = () => {
-  const keyBinds = useKeyBindsStore();
   const { showSettingsMenu } = useGameStore();
-
-  const keys = useKeys();
 
   if (!showSettingsMenu) return null;
 
@@ -17,31 +16,20 @@ export const SettingsMenu = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <>
       <div onClick={handleClose} className={styles.backButton}>
-        <div className={styles.backButtonLabel}>X</div>
+        X
       </div>
       <div className={styles.title}>Settings</div>
 
-      {/* {Object.keys(keys).map((key) => {
-        return (
-          <div key={key}>
-            {key} {keys[key] ? "pressed" : "not pressed"}
-          </div>
-        );
-      })}
+      <div className={styles.section}>
+        <SettingsKeybinds />
+      </div>
 
-{Object.keys(keys).map((key) => {
-        return (
-          <div key={key}>
-            {key} {keys[key] ? "pressed" : "not pressed"}
-          </div>
-        );
-      })} */}
-
-      {/* <SettingsController /> */}
-
-      <SettingsControls />
-    </div>
+      <div className={styles.section}>
+        <div className={styles.sectionHeading}>Controllers</div>
+        <SettingsControllers />
+      </div>
+    </>
   );
 };

@@ -1,0 +1,29 @@
+.container {
+  flex-direction: row;
+  border-radius: vars.$roundness;
+  overflow: hidden;
+  cursor: pointer;
+  align-items: stretch;
+  width: 100%;
+  max-width: 600px;
+
+  .label {
+    flex: 1;
+    flex-direction: row;
+    background-color: vars.$color-surface;
+    padding: vars.$spacing-primary;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .value {
+    flex: 1;
+    background-color: vars.$color-surface2;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.containerSelected {
+  outline: 1px solid vars.$color-primary;
+}

@@ -1,4 +1,5 @@
 export * from "./useGameStore";
 export * from "./userPlayerStore";
-export * from "./useKeyBindsStore";
+export * from "./useInput";
 export * from "./useKeys";
+export * from "./useControllerStore";

@@ -1,0 +1,25 @@
+.container {
+  flex-direction: row;
+  gap: vars.$spacing-primary;
+
+  .controller {
+    flex: 1;
+    padding: vars.$spacing-primary;
+    align-items: center;
+    justify-content: center;
+    background-color: vars.$color-surface;
+    border-radius: vars.$roundness;
+  }
+
+  .controllerConnected {
+    background-color: vars.$color-success;
+  }
+
+  .name {
+    font-size: vars.$font-size-h3;
+  }
+
+  .status {
+    font-size: vars.$font-size-body;
+  }
+}

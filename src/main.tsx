@@ -3,10 +3,10 @@ import * as ReactDOM from "react-dom/client";
 
 import { Hud, MainMenu, PauseMenu, SettingsMenu } from "components";
 import { useGameStore } from "store";
-import { Controls } from "./controls";
 import "styles/global.scss";
 
 import { Game } from "./game";
+import { Controls } from "./controls";
 import styles from "./styles/main.module.scss";
 
 const Main = () => {
@@ -18,10 +18,14 @@ const Main = () => {
       <Game className={styles.game} />
 
       <div className={styles.ui}>
-        {showMainMenu && <MainMenu />}
-        {isPaused && <PauseMenu />}
-        {showSettingsMenu && <SettingsMenu />}
-        {showHud && <Hud />}
+        {(showMainMenu || isPaused || showSettingsMenu) && (
+          <div className={styles.fullScreen}>
+            {showMainMenu && <MainMenu />}
+            {isPaused && <PauseMenu />}
+            {showSettingsMenu && <SettingsMenu />}
+          </div>
+        )}
+        {showHud && <div className={styles.overlay}>{showHud && <Hud />}</div>}
       </div>
     </div>
   );

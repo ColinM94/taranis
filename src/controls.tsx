@@ -1,76 +1,90 @@
 import * as React from "react";
-import { KeyBinds, useKeyBindsStore, useKeys } from "store";
+
+import { keybindKeys } from "consts";
+import { useControllerStore, useInput } from "store";
+
+type HandlePress = (
+  key: string | number,
+  type: "controller" | "keyboard",
+  isPressed: boolean
+) => void;
 
 export const Controls = () => {
-  console.log("Controls");
-  const keyBinds = useKeyBindsStore();
-  const keys = useKeys();
+  const input = useInput();
+  const controllers = useControllerStore();
 
-  const [keyboardBindsMap, controllerBindsMap] = React.useMemo(() => {
-    console.log("Key Binds");
-    const keyboardMap = new Map<string, keyof KeyBinds>();
-    const controllerMap = new Map<number, keyof KeyBinds>();
+  const handlePress: HandlePress = (key, type, isPressed) => {
+    for (let i = 0; i < keybindKeys.length; i++) {
+      const keybind = input[keybindKeys[i]];
 
-    const keys = Object.keys(keyBinds) as (keyof KeyBinds)[];
+      if (type === "keyboard" && keybind.keyboardKey === key) {
+        input.updateKeyBind(keybindKeys[i], { isPressed });
+      }
 
-    for (const key of keys) {
-      if (key === "updateKeyBind") continue;
-
-      const keyBind = keyBinds[key];
-      keyboardMap.set(keyBind.keyboardKey, key);
-      controllerMap.set(keyBind.controllerButton, key);
+      if (type === "controller" && keybind.controllerButton === key) {
+        input.updateKeyBind(keybindKeys[i], { isPressed });
+      }
     }
+  };
 
-    return [keyboardMap, controllerMap];
-  }, [keyBinds]);
+  const handleKeyDown = (e: KeyboardEvent) =>
+    handlePress(e.key, "keyboard", true);
 
-  const handleKeyDown = (e: KeyboardEvent) => handleKeyPress(e, "down");
-  const handleKeyUp = (e: KeyboardEvent) => handleKeyPress(e, "up");
+  const handleKeyUp = (e: KeyboardEvent) =>
+    handlePress(e.key, "keyboard", false);
 
-  const handleKeyPress = (event: KeyboardEvent, type: "up" | "down") => {
-    const key = event.key;
+  const handleControllerUpdate = () => {
+    const controller = navigator.getGamepads()[0];
 
-    if (keyboardBindsMap.has(key)) {
-      const action = keyboardBindsMap.get(key);
+    if (!controller) return;
 
-      if (!action) return;
+    for (let i = 0; i < controller.buttons.length; i++) {
+      const button = controller.buttons[i];
 
-      keys.setIsPressed(action, type === "down");
+      if (button.pressed) {
+        handlePress(i, "controller", true);
+      } else {
+        handlePress(i, "controller", false);
+      }
     }
   };
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      const controller = navigator.getGamepads()[0];
+      handleControllerUpdate();
+    }, 20);
 
-      if (!controller) return;
-
-      for (const button of controller.buttons) {
-        const key = button.value;
-
-        if (controllerBindsMap.has(key)) {
-          const action = controllerBindsMap.get(key);
-
-          if (action && button.pressed !== keys[action]) {
-            keys.setIsPressed(action, button.pressed);
-          }
-        }
-      }
-    }, 25);
-
-    return () => {
-      clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, []);
 
+  const handleControllerConnected = (e: GamepadEvent) => {
+    console.log("controller connected", e.gamepad.index);
+    controllers.update(e.gamepad.index, true);
+  };
+
+  const handleControllerDisconnected = (e: GamepadEvent) => {
+    console.log("controller disconnected", e.gamepad.index);
+    controllers.update(e.gamepad.index, false);
+  };
+
   React.useEffect(() => {
-    console.log("hello");
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
+
+    window.addEventListener("gamepadconnected", handleControllerConnected);
+    window.addEventListener(
+      "gamepaddisconnected",
+      handleControllerDisconnected
+    );
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("gamepadconnected", handleControllerConnected);
+      window.removeEventListener(
+        "gamepaddisconnected",
+        handleControllerDisconnected
+      );
     };
   }, []);
 

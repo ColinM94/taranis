@@ -1,0 +1,22 @@
+.container {
+  gap: vars.$spacing-secondary;
+
+  .header {
+    flex-direction: row;
+
+    .headerLabel {
+      flex: 1;
+      font-size: vars.$font-size-h2;
+    }
+
+    .headerButton {
+      align-self: flex-end;
+    }
+  }
+
+  .options {
+    gap: vars.$spacing-secondary;
+    width: 100%;
+    align-items: center;
+  }
+}

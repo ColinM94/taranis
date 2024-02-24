@@ -1,0 +1,16 @@
+.container {
+  background-color: #00000000;
+  color: white;
+  font-size: vars.$icon-size-large;
+  cursor: pointer;
+}
+
+.default {
+  background-color: vars.$color-primary;
+  padding: vars.$spacing-primary;
+  border-radius: vars.$roundness;
+}
+
+.icon {
+  aspect-ratio: 1;
+}

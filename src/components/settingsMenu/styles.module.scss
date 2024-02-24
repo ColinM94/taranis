@@ -1,19 +1,30 @@
-.container {
-  background-color: vars.$color-surface;
-  height: 100%;
-  width: 100%;
-  padding: vars.$spacing-primary;
+.backButton {
+  cursor: pointer;
+  position: absolute;
+  left: vars.$spacing-primary;
+  top: vars.$spacing-primary;
+  justify-content: center;
+  align-items: center;
+  font-size: vars.$font-size-display;
+  width: vars.$spacing-primary;
+  height: vars.$spacing-primary;
+  user-select: none;
+}
 
-  .backButton {
-    cursor: pointer;
-  }
+.backButtonLabel {
+}
 
-  .backButtonLabel {
-    font-size: vars.$font-size-display;
-  }
+.title {
+  text-align: center;
+  font-size: 50px;
+}
 
-  .title {
-    text-align: center;
-    font-size: 50px;
+.section {
+  width: min(100%, 600px);
+  gap: vars.$spacing-tertiary;
+
+  .sectionHeading {
+    font-size: vars.$font-size-h2;
+    margin-left: 2px;
   }
 }

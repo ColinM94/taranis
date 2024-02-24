@@ -1,9 +1,7 @@
-import { useControlsStore, useKeyBindsStore } from "store";
 import { usePlayerStore } from "store/userPlayerStore";
 import { animations } from "./animations";
 import { update } from "./update";
-
-const keyBinds = useKeyBindsStore.getState();
+import { useInput } from "store";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   keyW: Phaser.Input.Keyboard.Key | undefined;
@@ -56,11 +54,23 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update() {
+    const input = useInput.getState();
+
     const xVelocity = this.body?.velocity.x;
     const yVelocity = this.body?.velocity.y;
 
     if (xVelocity) {
       this.anims.play("run", true);
+    }
+
+    if (input.moveLeft.isPressed === true) {
+      this.setVelocityX(-225);
+      this.flipX = true;
+    }
+
+    if (input.moveRight.isPressed === true) {
+      this.setVelocityX(225);
+      this.flipX = false;
     }
 
     // if (this.flipX) {
