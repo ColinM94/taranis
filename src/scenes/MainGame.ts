@@ -1,7 +1,9 @@
 import { Enemy, Player } from "entities";
 import { useGameStore, useInput } from "store";
+import { navigate } from "utils";
 
 const { setIsPaused } = useGameStore.getState();
+const { createCallback } = useInput.getState();
 
 export class MainGame extends Phaser.Scene {
   ground: Phaser.Physics.Arcade.Sprite | undefined;
@@ -33,45 +35,26 @@ export class MainGame extends Phaser.Scene {
     this.physics.add.existing(this.player);
     this.physics.add.collider(this.player, this.ground);
 
+    createCallback("uiBack", () => {
+      this.scene.stop();
+      navigate("mainMenu");
+    });
+
     // Player2
-    this.player2 = new Player(
-      this,
-      width - this.player.body?.width,
-      height - groundHeight - 100,
-      1,
-      true
-    );
-    this.physics.add.existing(this.player2);
-    this.physics.add.collider(this.player2, this.ground);
-
-    // Player3
-    this.player3 = new Player(
-      this,
-      width - this.player.body?.width,
-      height - groundHeight - 100,
-      2,
-      true
-    );
-
-    this.physics.add.existing(this.player3);
-    this.physics.add.collider(this.player3, this.ground);
-
-    // // Player 4
-    // this.player4 = new Player(
+    // this.player2 = new Player(
     //   this,
     //   width - this.player.body?.width,
     //   height - groundHeight - 100,
-    //   3,
+    //   1,
     //   true
     // );
+    // this.physics.add.existing(this.player2);
+    // this.physics.add.collider(this.player2, this.ground);
 
-    // this.physics.add.existing(this.player4);
-    // this.physics.add.collider(this.player4, this.ground);
-
-    this.physics.add.collider(this.player, this.player2);
-    this.physics.add.collider(this.player, this.player3);
-    this.physics.add.collider(this.player2, this.player3);
-    this.physics.add.collider(this.player2, this.player4);
+    // this.physics.add.collider(this.player, this.player2);
+    // this.physics.add.collider(this.player, this.player3);
+    // this.physics.add.collider(this.player2, this.player3);
+    // this.physics.add.collider(this.player2, this.player4);
 
     // // Enemy
     // this.enemy = new Enemy(this, width, height - groundHeight - 100);
@@ -87,11 +70,6 @@ export class MainGame extends Phaser.Scene {
 
   update() {
     const input = useInput.getState();
-
-    if (input.pause.isPressed) {
-      this.scene.pause();
-      setIsPaused(true);
-    }
 
     this.player?.update();
     this.player2?.update();

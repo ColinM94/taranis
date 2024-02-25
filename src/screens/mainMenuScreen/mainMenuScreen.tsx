@@ -12,22 +12,25 @@ export const MainMenuScreen = () => {
 
   const [selectedButton, setSelectedButton] = React.useState(0);
 
-  console.log(selectedButton);
-
   React.useEffect(() => {
     const unsubscribe = input.createCallback("uiUp", () => {
-      console.log("uiUpCallback");
-      setSelectedButton((prev) => prev - 1);
+      setSelectedButton((prev) => Math.max(0, prev - 1));
     });
 
     const unsubscribe2 = input.createCallback("uiDown", () => {
-      console.log("uiDownCallback");
-      setSelectedButton((prev) => prev + 1);
+      setSelectedButton((prev) => Math.min(2, prev + 1));
+    });
+
+    const unsubscribe3 = input.createCallback("uiSelect", () => {
+      if (selectedButton === 0) startGame();
+      if (selectedButton === 1) showSettings();
+      if (selectedButton === 2) quitGame();
     });
 
     return () => {
       unsubscribe();
       unsubscribe2();
+      unsubscribe3();
     };
   }, []);
 

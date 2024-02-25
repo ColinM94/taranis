@@ -5,15 +5,18 @@ import { SettingsKeybinds } from "./components/settingsKeybinds/settingsKeybinds
 import { SettingsControllers } from "./components/settingsControllers/settingsControllers";
 
 import styles from "./styles.module.scss";
+import React from "react";
 
 export const SettingsScreen = () => {
   const input = useInput();
 
-  console.log(useInput);
-
   const handleClose = () => {
     navigate("mainMenu");
   };
+
+  React.useEffect(() => {
+    console.log("SettingsScreen mounted", input.callbacks);
+  }, [input.callbacks]);
 
   return (
     <>
@@ -23,8 +26,8 @@ export const SettingsScreen = () => {
 
       <div className={styles.title}>Settings</div>
 
-      <SettingsKeybinds className={styles.section} />
-      <SettingsControllers className={styles.section} />
+      {/* <SettingsKeybinds className={styles.section} />
+      <SettingsControllers className={styles.section} /> */}
     </>
   );
 };

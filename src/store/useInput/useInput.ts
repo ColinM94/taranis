@@ -3,8 +3,11 @@ import { createZustandStore } from "../createZustandStore";
 import { keybinds } from "config";
 
 interface Actions {
-  callbacks: { [key: string]: () => void };
-  createCallback: (key: keyof Keybinds, callback: () => void) => () => void;
+  callbacks: { [key: string]: (isPressed: boolean) => void };
+  createCallback: (
+    key: keyof Keybinds,
+    callback: (isPressed: boolean) => void
+  ) => () => void;
   updateKeyBind: (key: keyof Keybinds, value: Partial<Keybind>) => void;
   reset: () => void;
 }
@@ -22,16 +25,19 @@ export const useInput = createZustandStore<Keybinds & Actions>({
       }));
     },
     callbacks: {},
-    createCallback: (key: keyof Keybinds, callback: () => void) => {
+    createCallback: (key, callback) => {
       set((state) => ({
-        callbacks: { ...state.callbacks, [key]: callback },
+        callbacks: {
+          ...state.callbacks,
+          [key]: callback,
+        },
       }));
 
       return () => {
         set((state) => {
-          const tempCallbacks = { ...state.callbacks };
-          delete tempCallbacks[key];
-          return tempCallbacks;
+          const callbacks = { ...state.callbacks };
+          delete callbacks[key];
+          return { callbacks };
         });
       };
     },
