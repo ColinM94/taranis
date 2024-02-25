@@ -1,38 +1,34 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom/client";
-
-import { Hud, MainMenu, PauseMenu, SettingsMenu } from "components";
+import { Hud, PauseMenu } from "components";
 import { useGameStore } from "store";
+import { MainMenuScreen, SettingsScreen } from "screens";
 import "styles/global.scss";
 
-import { Game } from "./game";
-import { Controls } from "./controls";
 import styles from "./styles/main.module.scss";
+import { Controls } from "./controls";
+// import { Game } from "./game";
 
-const Main = () => {
+export const Main = () => {
   const { showSettingsMenu, showHud, isPaused, showMainMenu } = useGameStore();
 
   return (
     <div className={styles.container}>
       <Controls />
-      <Game className={styles.game} />
+      {/* <Game className={styles.game} /> */}
 
       <div className={styles.ui}>
         {(showMainMenu || isPaused || showSettingsMenu) && (
           <div className={styles.fullScreen}>
-            {showMainMenu && <MainMenu />}
-            {isPaused && <PauseMenu />}
-            {showSettingsMenu && <SettingsMenu />}
+            {showMainMenu && <MainMenuScreen />}
+
+            {showSettingsMenu && <SettingsScreen />}
           </div>
         )}
-        {showHud && <div className={styles.overlay}>{showHud && <Hud />}</div>}
+        {(showHud || isPaused) && (
+          <div className={styles.overlay}>
+            {showHud && <Hud />} {isPaused && <PauseMenu />}
+          </div>
+        )}
       </div>
     </div>
   );
 };
-
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <Main />
-  </React.StrictMode>
-);

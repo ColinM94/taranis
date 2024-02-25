@@ -11,9 +11,6 @@
   user-select: none;
 }
 
-.backButtonLabel {
-}
-
 .title {
   text-align: center;
   font-size: 50px;
@@ -22,9 +19,4 @@
 .section {
   width: min(100%, 600px);
   gap: vars.$spacing-tertiary;
-
-  .sectionHeading {
-    font-size: vars.$font-size-h2;
-    margin-left: 2px;
-  }
 }

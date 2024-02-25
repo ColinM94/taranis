@@ -1,15 +1,16 @@
 import * as React from "react";
 
-import { keybindKeys } from "consts";
 import { useInput } from "store";
 import { Keybinds } from "types";
-import { getControllerKeyName, getKeyboardKeyName } from "utils";
-import { Button } from "components";
+import { classes, getControllerKeyName, getKeyboardKeyName } from "utils";
+import { keybindKeys } from "consts";
 
 import { SettingsKeybindsOption } from "./components/settingsKeybindsOption/settingsKeybindsOption";
+import { SettingsSectionHeader } from "../settingsSectionHeader/settingsSectionHeader";
 import styles from "./styles.module.scss";
+import { Props } from "./types";
 
-export const SettingsKeybinds = () => {
+export const SettingsKeybinds = ({ className }: Props) => {
   const input = useInput();
 
   const [selectedOption, setSelectedOption] = React.useState<keyof Keybinds>();
@@ -58,16 +59,8 @@ export const SettingsKeybinds = () => {
   }, [selectedOption]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div className={styles.headerLabel}>Keybinds</div>
-        <Button
-          label="&#9100;"
-          type="icon"
-          onClick={handleReset}
-          className={styles.headerButton}
-        />
-      </div>
+    <div className={classes(styles.container, className)}>
+      <SettingsSectionHeader label="Keybinds" onReset={handleReset} />
 
       <div className={styles.options}>
         {keybindKeys.map((keybindKey) => (

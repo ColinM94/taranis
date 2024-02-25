@@ -4,8 +4,10 @@ import { ControllerState, useControllerStore } from "store";
 import { classes } from "utils";
 
 import styles from "./styles.module.scss";
+import { Props } from "./types";
+import { SettingsSectionHeader } from "../settingsSectionHeader/settingsSectionHeader";
 
-export const SettingsControllers = () => {
+export const SettingsControllers = ({ className }: Props) => {
   const controllers = useControllerStore();
 
   const render = React.useMemo(() => {
@@ -34,5 +36,11 @@ export const SettingsControllers = () => {
     return items;
   }, [controllers]);
 
-  return <div className={styles.container}>{render}</div>;
+  return (
+    <div className={classes(styles.container, className)}>
+      <SettingsSectionHeader label="Controllers" />
+
+      <div className={styles.controllers}>{render}</div>
+    </div>
+  );
 };

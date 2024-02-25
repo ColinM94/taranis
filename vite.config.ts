@@ -5,10 +5,12 @@ export default defineConfig({
   resolve: {
     alias: {
       assets: "/src/assets",
-      consts: "/src/consts",
       components: "/src/components",
+      consts: "/src/consts",
+      config: "/src/config",
       entities: "/src/entities",
       scenes: "/src/scenes",
+      screens: "/src/screens",
       store: "/src/store",
       styles: "/src/styles",
       types: "/src/types",

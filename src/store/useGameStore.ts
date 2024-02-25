@@ -11,12 +11,6 @@ interface GameState {
   setShowMainMenu: (showMainMenu: boolean) => void;
   showSettingsMenu: boolean;
   setShowSettingsMenu: (showSettingsMenu: boolean) => void;
-  controllerBindings: {
-    [key: string]: number;
-  };
-  setControllerBindings: (controllerBindings: {
-    [key: string]: number;
-  }) => void;
 }
 
 export const useGameStore = createZustandStore<GameState>({
@@ -32,15 +26,6 @@ export const useGameStore = createZustandStore<GameState>({
     setShowMainMenu: (showMainMenu) => set({ showMainMenu }),
     showSettingsMenu: false,
     setShowSettingsMenu: (showSettingsMenu) => set({ showSettingsMenu }),
-    controllerBindings: {
-      jump: 0,
-      moveLeft: 14,
-      moveRight: 15,
-      primaryAttack: 2,
-      secondaryAttack: 3,
-      tertiaryAttack: 1,
-    },
-    setControllerBindings: (controllerBindings) => set({ controllerBindings }),
   }),
   persistState: false,
 });

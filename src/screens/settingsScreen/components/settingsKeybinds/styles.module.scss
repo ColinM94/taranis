@@ -7,10 +7,12 @@
     .headerLabel {
       flex: 1;
       font-size: vars.$font-size-h2;
+      margin-left: 2px;
     }
 
     .headerButton {
       align-self: flex-end;
+      margin-right: 2px;
     }
   }
 

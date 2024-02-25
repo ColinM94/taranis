@@ -1,15 +1,15 @@
-import { useGameStore } from "store";
 import { navigate } from "utils";
+import { useInput } from "store";
 
 import { SettingsKeybinds } from "./components/settingsKeybinds/settingsKeybinds";
 import { SettingsControllers } from "./components/settingsControllers/settingsControllers";
 
 import styles from "./styles.module.scss";
 
-export const SettingsMenu = () => {
-  const { showSettingsMenu } = useGameStore();
+export const SettingsScreen = () => {
+  const input = useInput();
 
-  if (!showSettingsMenu) return null;
+  console.log(useInput);
 
   const handleClose = () => {
     navigate("mainMenu");
@@ -20,16 +20,11 @@ export const SettingsMenu = () => {
       <div onClick={handleClose} className={styles.backButton}>
         X
       </div>
+
       <div className={styles.title}>Settings</div>
 
-      <div className={styles.section}>
-        <SettingsKeybinds />
-      </div>
-
-      <div className={styles.section}>
-        <div className={styles.sectionHeading}>Controllers</div>
-        <SettingsControllers />
-      </div>
+      <SettingsKeybinds className={styles.section} />
+      <SettingsControllers className={styles.section} />
     </>
   );
 };

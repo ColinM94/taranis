@@ -1,16 +1,11 @@
+import { keybinds } from "config";
+
 export interface Keybind {
   keyboardKey: string;
   controllerButton: number;
   label: string;
   isPressed?: boolean;
+  onPress?: (callback: (isPressed: boolean) => void) => void;
 }
 
-export interface Keybinds {
-  moveLeft: Keybind;
-  moveRight: Keybind;
-  jump: Keybind;
-  attack: Keybind;
-  attackSecondary: Keybind;
-  attackTertiary: Keybind;
-  pause: Keybind;
-}
+export type Keybinds = Record<keyof typeof keybinds, Keybind>;

@@ -3,7 +3,8 @@
   width: 100%;
   align-items: center;
   justify-content: center;
-  padding: vars.$spacing-primary * 2;
+  padding: vars.$spacing-primary;
+  padding-bottom: 0;
   background-color: vars.$color-background;
 
   .gameName {
@@ -28,6 +29,11 @@
       &:active {
         scale: 0.9;
       }
+    }
+
+    .buttonSelected {
+      background-color: vars.$color-primary;
+      color: white;
     }
   }
 

@@ -1,20 +1,3 @@
-export const gameName = "Taranis";
+import { KeybindKey, keybinds } from "config";
 
-export const controllerButtonNames = [
-  "A",
-  "B",
-  "X",
-  "Y",
-  "LB",
-  "RB",
-  "LT",
-  "RT",
-  "Back",
-  "Start",
-  "LS",
-  "RS",
-  "DPad Up",
-  "DPad Down",
-  "DPad Left",
-  "DPad Right",
-];
+export const keybindKeys = Object.keys(keybinds) as KeybindKey[];

@@ -1,50 +1,77 @@
 import * as React from "react";
 
 import { keybindKeys } from "consts";
-import { useControllerStore, useInput } from "store";
+import { useControllerStore, useInput, useInput2 } from "store";
 
 type HandlePress = (
   key: string | number,
   type: "controller" | "keyboard",
-  isPressed: boolean
+  isPressed: boolean,
+  inputIndex: number
 ) => void;
 
 export const Controls = () => {
   const input = useInput();
+  const input2 = useInput2();
   const controllers = useControllerStore();
 
-  const handlePress: HandlePress = (key, type, isPressed) => {
-    for (let i = 0; i < keybindKeys.length; i++) {
-      const keybind = input[keybindKeys[i]];
+  const handlePress: HandlePress = React.useCallback(
+    (key, type, isPressed, inputIndex) => {
+      if (inputIndex === 0) {
+        for (let i = 0; i < keybindKeys.length; i++) {
+          const keybind = input[keybindKeys[i]];
 
-      if (type === "keyboard" && keybind.keyboardKey === key) {
-        input.updateKeyBind(keybindKeys[i], { isPressed });
-      }
+          if (type === "keyboard" && keybind?.keyboardKey === key) {
+            input.updateKeyBind(keybindKeys[i], { isPressed });
 
-      if (type === "controller" && keybind.controllerButton === key) {
-        input.updateKeyBind(keybindKeys[i], { isPressed });
+            if (isPressed) {
+              input.callbacks[keybindKeys[i]]?.();
+            }
+          }
+
+          if (type === "controller" && keybind?.controllerButton === key) {
+            input.updateKeyBind(keybindKeys[i], { isPressed });
+          }
+        }
+      } else if (inputIndex === 1) {
+        for (let i = 0; i < keybindKeys.length; i++) {
+          const keybind = input2[keybindKeys[i]];
+
+          if (type === "keyboard" && keybind?.keyboardKey === key) {
+            input2.updateKeyBind(keybindKeys[i], { isPressed });
+          }
+
+          if (type === "controller" && keybind?.controllerButton === key) {
+            input2.updateKeyBind(keybindKeys[i], { isPressed });
+          }
+        }
       }
-    }
+    },
+    [input.callbacks]
+  );
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    return handlePress(e.key, "keyboard", true, 0);
   };
 
-  const handleKeyDown = (e: KeyboardEvent) =>
-    handlePress(e.key, "keyboard", true);
-
-  const handleKeyUp = (e: KeyboardEvent) =>
-    handlePress(e.key, "keyboard", false);
+  const handleKeyUp = (e: KeyboardEvent) => {
+    return handlePress(e.key, "keyboard", false, 0);
+  };
 
   const handleControllerUpdate = () => {
-    const controller = navigator.getGamepads()[0];
+    for (let x = 0; x < 4; x++) {
+      const controller = navigator.getGamepads()[x];
 
-    if (!controller) return;
+      if (!controller) continue;
 
-    for (let i = 0; i < controller.buttons.length; i++) {
-      const button = controller.buttons[i];
+      for (let i = 0; i < controller.buttons.length; i++) {
+        const button = controller.buttons[i];
 
-      if (button.pressed) {
-        handlePress(i, "controller", true);
-      } else {
-        handlePress(i, "controller", false);
+        if (button.pressed) {
+          handlePress(i, "controller", true, x);
+        } else {
+          handlePress(i, "controller", false, x);
+        }
       }
     }
   };
@@ -52,18 +79,16 @@ export const Controls = () => {
   React.useEffect(() => {
     const interval = setInterval(() => {
       handleControllerUpdate();
-    }, 20);
+    }, 250);
 
     return () => clearInterval(interval);
   }, []);
 
   const handleControllerConnected = (e: GamepadEvent) => {
-    console.log("controller connected", e.gamepad.index);
     controllers.update(e.gamepad.index, true);
   };
 
   const handleControllerDisconnected = (e: GamepadEvent) => {
-    console.log("controller disconnected", e.gamepad.index);
     controllers.update(e.gamepad.index, false);
   };
 
@@ -71,11 +96,11 @@ export const Controls = () => {
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
-    window.addEventListener("gamepadconnected", handleControllerConnected);
-    window.addEventListener(
-      "gamepaddisconnected",
-      handleControllerDisconnected
-    );
+    // window.addEventListener("gamepadconnected", handleControllerConnected);
+    // window.addEventListener(
+    //   "gamepaddisconnected",
+    //   handleControllerDisconnected
+    // );
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
