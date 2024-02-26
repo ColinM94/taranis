@@ -1,29 +1,52 @@
 import * as React from "react";
 
 import { useInput } from "store";
-import { Keybinds } from "types";
 import { classes } from "utils";
 import { keybindKeys } from "consts";
+import { KeybindKey, keyNames } from "config";
+import { Bind, Keybinds } from "types";
 
-import { SettingsKeybindsOption } from "./components/settingsKeybindsOption/settingsKeybindsOption";
 import { SettingsSectionHeader } from "../settingsSectionHeader/settingsSectionHeader";
-import styles from "./styles.module.scss";
 import { Props } from "./types";
+import styles from "./styles.module.scss";
+
+type SelectedOption = {
+  keybindKey: KeybindKey;
+  index: number;
+};
 
 export const SettingsKeybinds = ({ className }: Props) => {
   const input = useInput();
 
-  const [selectedOption, setSelectedOption] = React.useState<keyof Keybinds>();
+  const [selectedOption, setSelectedOption] =
+    React.useState<SelectedOption | null>(null);
 
   const handleReset = () => {
     input.reset();
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
+    updateKeyBind(`keyboard:${e.code}` as Bind);
+  };
+
+  const updateKeyBind = (bind: Bind) => {
     if (!selectedOption) return;
 
-    // input.updateKeyBind(selectedOption, { keyboardKey: e.key });
-    setSelectedOption(undefined);
+    const updatedBinds: Bind[] = [];
+
+    for (let i = 0; i < 3; i++) {
+      if (i === selectedOption.index) {
+        updatedBinds[i] = bind;
+      } else {
+        updatedBinds[i] = input[selectedOption.keybindKey].binds[i];
+      }
+    }
+
+    input.updateKeyBind(selectedOption.keybindKey, {
+      binds: updatedBinds,
+    });
+
+    setSelectedOption(null);
   };
 
   React.useEffect(() => {
@@ -36,44 +59,78 @@ export const SettingsKeybinds = ({ className }: Props) => {
     };
   }, [selectedOption]);
 
-  // React.useEffect(() => {
-  //   if (!selectedOption) return;
+  React.useEffect(() => {
+    if (!selectedOption) return;
 
-  //   const interval = setInterval(() => {
-  //     const controller = navigator.getGamepads()[0];
+    const interval = setInterval(() => {
+      const controller = navigator.getGamepads()[0];
 
-  //     if (!controller) return;
+      if (!controller) return;
 
-  //     for (let i = 0; i < controller.buttons.length; i++) {
-  //       const button = controller.buttons[i];
+      for (let i = 0; i < controller.buttons.length; i++) {
+        const button = controller.buttons[i];
 
-  //       if (button.pressed) {
-  //         console.log("button pressed", i, selectedOption);
-  //         input.updateKeyBind(selectedOption, { controllerButtons: [i] });
-  //         setSelectedOption(undefined);
-  //       }
-  //     }
-  //   }, 20);
+        if (button.pressed) {
+          updateKeyBind(`controller:${i}` as Bind);
+        }
+      }
+    }, 20);
 
-  //   return () => clearInterval(interval);
-  // }, [selectedOption]);
+    return () => clearInterval(interval);
+  }, [selectedOption]);
+
+  console.log(input["jump"].binds);
+
+  const rows = React.useMemo(() => {
+    return keybindKeys.map((keybindKey) => {
+      const keybind = input[keybindKey];
+
+      if (keybind.rebindable === false) return null;
+
+      const row = [<div className={styles.rowLabel}>{keybind.label}</div>];
+
+      for (let i = 0; i < 3; i++) {
+        const isSelected =
+          selectedOption?.keybindKey === keybindKey &&
+          selectedOption.index === i;
+
+        const val = keyNames[keybind.binds[i]] || "-";
+
+        row.push(
+          <div
+            onClick={() => setSelectedOption({ keybindKey, index: i })}
+            key={`${keybindKey}-${i}`}
+            className={classes(
+              styles.rowValue,
+              isSelected && styles.selectedValue
+            )}
+          >
+            {isSelected && "Press a key"}
+            {!isSelected && val}
+          </div>
+        );
+      }
+
+      return (
+        <div key={keybindKey} className={styles.row}>
+          {row}
+        </div>
+      );
+    });
+  }, [input, selectedOption]);
 
   return (
     <div className={classes(styles.container, className)}>
       <SettingsSectionHeader label="Keybinds" onReset={handleReset} />
 
-      <div className={styles.options}>
-        {keybindKeys.map((keybindKey) => (
-          <SettingsKeybindsOption
-            keybindKey={keybindKey}
-            isSelected={keybindKey === selectedOption}
-            label={input[keybindKey].label}
-            onClick={() => setSelectedOption(keybindKey)}
-            type="keyboard"
-            key={keybindKey}
-          />
-        ))}
+      <div className={classes(styles.headerRow, styles.row)}>
+        <div className={styles.rowLabel}>Action</div>
+        <div className={styles.rowValue}>#1</div>
+        <div className={styles.rowValue}>#2</div>
+        <div className={styles.rowValue}>#3</div>
       </div>
+
+      {rows}
     </div>
   );
 };

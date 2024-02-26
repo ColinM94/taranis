@@ -78,6 +78,7 @@ export interface Keybind {
   isPressed?: boolean;
   callbacks?: { [key: string]: (isPressed: boolean) => void };
   onPress?: (callback: () => void) => void;
+  rebindable?: boolean;
 }
 
 export type Keybinds = Record<keyof typeof keybinds, Keybind>;

@@ -3,16 +3,65 @@
 
   .header {
     flex-direction: row;
+    border-radius: vars.$roundness;
+    overflow: hidden;
 
     .headerLabel {
       flex: 1;
       font-size: vars.$font-size-h2;
-      margin-left: 2px;
+      text-align: center;
+      background-color: vars.$color-surface2;
+      padding: vars.$spacing-primary;
+    }
+
+    .headerLabelMain {
+      @extend .headerLabel;
+      background-color: vars.$color-surface;
     }
 
     .headerButton {
       align-self: flex-end;
       margin-right: 2px;
+    }
+  }
+  .headerRow {
+    cursor: pointer;
+
+    .rowValue {
+      cursor: default !important;
+      padding-top: vars.$spacing-tertiary !important;
+      padding-bottom: vars.$spacing-tertiary !important;
+    }
+
+    .rowLabel {
+      padding-top: vars.$spacing-tertiary !important;
+      padding-bottom: vars.$spacing-tertiary !important;
+    }
+  }
+
+  .row {
+    flex-direction: row;
+    border-radius: vars.$roundness;
+    overflow: hidden;
+    background-color: vars.$color-surface2;
+
+    .rowValue {
+      flex: 1;
+      background-color: vars.$color-surface2;
+      border: 1px solid vars.$color-surface2;
+      padding: vars.$spacing-secondary;
+      text-align: center;
+      cursor: pointer;
+      border-radius: vars.$roundness;
+    }
+
+    .selectedValue {
+      border: 1px solid vars.$color-primary;
+    }
+
+    .rowLabel {
+      @extend .rowValue;
+      background-color: vars.$color-surface;
     }
   }
 

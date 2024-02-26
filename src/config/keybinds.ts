@@ -18,10 +18,10 @@ export type KeybindKey =
 export const controllerButtonNames = {};
 
 export const keyNames: Record<Bind, string> = {
-  "keyboard:ArrowLeft": "←",
-  "keyboard:ArrowRight": "→",
-  "keyboard:ArrowUp": "↑",
-  "keyboard:ArrowDown": "↓",
+  "keyboard:ArrowLeft": "Left Arrow",
+  "keyboard:ArrowRight": "Right Arrow",
+  "keyboard:ArrowUp": "Up Arrow",
+  "keyboard:ArrowDown": "Down Arrow",
   "keyboard:KeyA": "A",
   "keyboard:KeyB": "B",
   "keyboard:KeyC": "C",
@@ -127,25 +127,31 @@ export const keybinds: Record<KeybindKey, Keybind> = {
   uiUp: {
     binds: ["keyboard:ArrowUp", "keyboard:KeyW"],
     label: "UI Up",
+    rebindable: false,
   },
   uiDown: {
     binds: ["keyboard:ArrowDown", "keyboard:KeyS"],
     label: "UI Down",
+    rebindable: false,
   },
   uiLeft: {
     binds: [],
     label: "UI Left",
+    rebindable: false,
   },
   uiRight: {
     binds: [],
     label: "UI Right",
+    rebindable: false,
   },
   uiSelect: {
     binds: [],
     label: "UI Select",
+    rebindable: false,
   },
   uiBack: {
     binds: [],
     label: "UI Back",
+    rebindable: false,
   },
 };
