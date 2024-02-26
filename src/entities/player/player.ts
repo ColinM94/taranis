@@ -1,6 +1,8 @@
 import { animations } from "./animations";
 import { useInput, useInput2 } from "store";
 
+const input = useInput.getState();
+
 export class Player extends Phaser.Physics.Arcade.Sprite {
   keyW: Phaser.Input.Keyboard.Key | undefined;
   keyA: Phaser.Input.Keyboard.Key | undefined;
@@ -39,6 +41,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.flipX = flipX;
 
     animations(this);
+
+    input.on("jump", () => {
+      alert("Do something");
+    });
 
     // this.swordHitbox = scene.add
     //   .rectangle(

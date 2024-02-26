@@ -5,18 +5,50 @@
   justify-content: center;
   padding: vars.$spacing-primary;
   padding-bottom: 0;
-  background-color: vars.$color-background;
+
+  .backgroundImage {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-size: cover;
+  }
+
+  .start {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    padding: vars.$spacing-primary;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+    font-size: vars.$font-size-display;
+    text-shadow: vars.$text-shadow;
+    cursor: pointer;
+  }
 
   .gameName {
-    flex: 1;
     font-size: min(25vw, 15rem);
     align-items: center;
+    user-select: none;
+    text-shadow: vars.$text-shadow;
+    opacity: 0;
   }
 
   .buttons {
-    flex: 1;
     gap: vars.$spacing-primary;
-    width: 300px;
+    opacity: 0;
+    flex: 1;
+    justify-content: center;
+    margin-bottom: vars.$spacing-primary;
 
     .button {
       justify-content: center;
@@ -24,24 +56,48 @@
       border-radius: vars.$roundness;
       font-size: vars.$font-size-display;
       cursor: pointer;
-      padding: vars.$spacing-primary;
-
-      &:active {
-        scale: 0.9;
-      }
+      text-shadow: vars.$text-shadow;
+      color: vars.$color-text-secondary;
     }
 
     .buttonSelected {
-      background-color: vars.$color-primary;
+      scale: 1.1;
       color: white;
     }
   }
 
   .copyright {
-    flex: 0.75;
     padding: vars.$spacing-primary;
     font-size: vars.$font-size-h1;
     align-items: center;
     justify-content: flex-end;
+    user-select: none;
+  }
+
+  .fadeOut {
+    animation: fadeout 0.75s ease-in-out forwards;
+    pointer-events: none;
+
+    @keyframes fadeout {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+  }
+
+  .fadeIn {
+    animation: fadein 0.75s ease-in-out forwards;
+
+    @keyframes fadein {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
   }
 }

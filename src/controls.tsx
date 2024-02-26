@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { useControllerStore, useInput } from "store";
-import { Keybinds } from "types";
+import { Bind, Keybinds } from "types";
 import { KeybindKey, keybinds } from "config";
 
 export const Controls = () => {
@@ -11,47 +11,65 @@ export const Controls = () => {
     ...keybinds,
   });
 
-  const [keyboardMap, controllerMap] = React.useMemo(() => {
-    const tempControllerMap = new Map<number, KeybindKey[]>();
-    const tempKeyboardMap = new Map<string, KeybindKey[]>();
+  const keyMap = React.useMemo(() => {
+    const tempKeyMap = new Map<string, KeybindKey[]>();
 
     for (const key in keybinds) {
       const keybind = keybinds[key as KeybindKey];
 
-      for (const controllerButton of keybind.controllerButtons) {
-        const array = tempControllerMap.get(controllerButton) || [];
-        array.push(key as KeybindKey);
-        tempControllerMap.set(controllerButton, array);
-      }
+      for (const bind of keybind.binds) {
+        if (!tempKeyMap.has(bind)) {
+          tempKeyMap.set(bind, []);
+        }
 
-      for (const keyboardKey of keybind.keyboardKeys) {
-        const array = tempKeyboardMap.get(keyboardKey) || [];
-        array.push(key as KeybindKey);
-        tempKeyboardMap.set(keyboardKey, array);
+        tempKeyMap.set(bind, [...tempKeyMap.get(bind)!, key as KeybindKey]);
       }
     }
 
-    return [tempKeyboardMap, tempControllerMap];
+    return tempKeyMap;
   }, []);
 
-  const handlePress = (keys: KeybindKey[], isPressed: boolean) => {
+  console.log(keyMap);
+
+  const handlePress = (key: Bind, isPressed: boolean) => {
+    const input = useInput.getState();
+    const keys = keyMap.get(key);
+
+    if (!keys || keys.length === 0) return;
+
     for (const key of keys) {
-      if (tempState.current[key].isPressed === isPressed) return;
+      if (tempState.current[key].isPressed === isPressed) continue;
 
       tempState.current[key].isPressed = isPressed;
 
-      isPressed && useInput.getState().callbacks[key]?.(isPressed);
+      isPressed && input.callbacks[key]?.(isPressed);
+
+      input.updateKeyBind(key, {
+        isPressed,
+      });
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    const key = keyboardMap.get(e.key);
-    if (key) handlePress(key, true);
+  const handleKeyboardDown = (e: KeyboardEvent) => {
+    handlePress(`keyboard:${e.code}` as Bind, true);
   };
 
-  const handleKeyUp = (e: KeyboardEvent) => {
-    const key = keyboardMap.get(e.key);
-    if (key) handlePress(key, false);
+  const handleKeyboardUp = (e: KeyboardEvent) => {
+    handlePress(`keyboard:${e.code}` as Bind, false);
+  };
+
+  const handleMouseDown = (e: MouseEvent) => {
+    e.preventDefault();
+    handlePress(`mouse:${e.button}` as Bind, true);
+  };
+
+  const handleMouseUp = (e: MouseEvent) => {
+    e.preventDefault();
+    handlePress(`mouse:${e.button}` as Bind, false);
+  };
+
+  const handleContextMenu = (e: MouseEvent) => {
+    e.preventDefault();
   };
 
   const handleControllerUpdate = () => {
@@ -62,11 +80,8 @@ export const Controls = () => {
 
       for (let i = 0; i < controller.buttons.length; i++) {
         const button = controller.buttons[i];
-        const key = controllerMap.get(i);
-
-        if (key !== undefined) {
-          handlePress(key, button.pressed);
-        }
+        const bind = `controller:${i}` as Bind;
+        handlePress(bind, button.pressed);
       }
     }
   };
@@ -88,8 +103,11 @@ export const Controls = () => {
   };
 
   React.useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("keydown", handleKeyboardDown);
+    window.addEventListener("keyup", handleKeyboardUp);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("contextmenu", handleContextMenu);
 
     window.addEventListener("gamepadconnected", handleControllerConnected);
     window.addEventListener(
@@ -98,8 +116,11 @@ export const Controls = () => {
     );
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("keydown", handleKeyboardDown);
+      window.removeEventListener("keyup", handleKeyboardUp);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
+      document.addEventListener("contextmenu", handleContextMenu);
       window.removeEventListener("gamepadconnected", handleControllerConnected);
       window.removeEventListener(
         "gamepaddisconnected",

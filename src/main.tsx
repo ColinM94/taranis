@@ -5,7 +5,6 @@ import "styles/global.scss";
 
 import styles from "./styles/main.module.scss";
 import { Controls } from "./controls";
-import { Game } from "./game";
 
 export const Main = () => {
   const { showSettingsMenu, showHud, isPaused, showMainMenu } = useGameStore();
@@ -13,7 +12,7 @@ export const Main = () => {
   return (
     <div className={styles.container}>
       <Controls />
-      <Game className={styles.game} />
+      {/* <Game className={styles.game} /> */}
 
       <div className={styles.ui}>
         {(showMainMenu || isPaused || showSettingsMenu) && (

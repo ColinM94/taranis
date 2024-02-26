@@ -1,10 +1,35 @@
+import * as React from "react";
+
+import { classes } from "utils";
+import { useInput } from "store";
+
 import { Props } from "./types";
 import styles from "./styles.module.scss";
-import { classes } from "utils";
 
 export const SettingsKeybindsOption = (props: Props) => {
-  const { keybindKey, isSelected, label, controllerKey, keyboardKey, onClick } =
-    props;
+  const { keybindKey, isSelected, label, onClick } = props;
+
+  const input = useInput();
+
+  const [selectedValue, setSelectedValue] = React.useState();
+
+  const values = () => {
+    const binds = input[keybindKey].binds;
+
+    const tempValues = [];
+
+    for (let i = 0; i < 5; i++) {
+      const bind = binds?.[i];
+
+      tempValues.push(
+        <div key={i} className={styles.value}>
+          {bind}
+        </div>
+      );
+    }
+
+    return tempValues;
+  };
 
   return (
     <div
@@ -16,8 +41,8 @@ export const SettingsKeybindsOption = (props: Props) => {
       )}
     >
       <div className={styles.label}>{label}</div>
-      <div className={styles.value}>{keyboardKey}</div>
-      <div className={styles.value}>{controllerKey}</div>
+
+      {values()}
     </div>
   );
 };

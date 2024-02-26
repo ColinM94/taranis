@@ -26,8 +26,8 @@ export const SettingsScreen = () => {
 
       <div className={styles.title}>Settings</div>
 
-      {/* <SettingsKeybinds className={styles.section} />
-      <SettingsControllers className={styles.section} /> */}
+      <SettingsKeybinds className={styles.section} />
+      <SettingsControllers className={styles.section} />
     </>
   );
 };

@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { useInput } from "store";
 import { Keybinds } from "types";
-import { classes, getControllerKeyName, getKeyboardKeyName } from "utils";
+import { classes } from "utils";
 import { keybindKeys } from "consts";
 
 import { SettingsKeybindsOption } from "./components/settingsKeybindsOption/settingsKeybindsOption";
@@ -22,7 +22,7 @@ export const SettingsKeybinds = ({ className }: Props) => {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (!selectedOption) return;
 
-    input.updateKeyBind(selectedOption, { keyboardKey: e.key });
+    // input.updateKeyBind(selectedOption, { keyboardKey: e.key });
     setSelectedOption(undefined);
   };
 
@@ -36,27 +36,27 @@ export const SettingsKeybinds = ({ className }: Props) => {
     };
   }, [selectedOption]);
 
-  React.useEffect(() => {
-    if (!selectedOption) return;
+  // React.useEffect(() => {
+  //   if (!selectedOption) return;
 
-    const interval = setInterval(() => {
-      const controller = navigator.getGamepads()[0];
+  //   const interval = setInterval(() => {
+  //     const controller = navigator.getGamepads()[0];
 
-      if (!controller) return;
+  //     if (!controller) return;
 
-      for (let i = 0; i < controller.buttons.length; i++) {
-        const button = controller.buttons[i];
+  //     for (let i = 0; i < controller.buttons.length; i++) {
+  //       const button = controller.buttons[i];
 
-        if (button.pressed) {
-          console.log("button pressed", i, selectedOption);
-          input.updateKeyBind(selectedOption, { controllerButton: i });
-          setSelectedOption(undefined);
-        }
-      }
-    }, 20);
+  //       if (button.pressed) {
+  //         console.log("button pressed", i, selectedOption);
+  //         input.updateKeyBind(selectedOption, { controllerButtons: [i] });
+  //         setSelectedOption(undefined);
+  //       }
+  //     }
+  //   }, 20);
 
-    return () => clearInterval(interval);
-  }, [selectedOption]);
+  //   return () => clearInterval(interval);
+  // }, [selectedOption]);
 
   return (
     <div className={classes(styles.container, className)}>
@@ -66,13 +66,10 @@ export const SettingsKeybinds = ({ className }: Props) => {
         {keybindKeys.map((keybindKey) => (
           <SettingsKeybindsOption
             keybindKey={keybindKey}
-            keyboardKey={getKeyboardKeyName(input[keybindKey].keyboardKey)}
-            controllerKey={getControllerKeyName(
-              input[keybindKey].controllerButton
-            )}
             isSelected={keybindKey === selectedOption}
             label={input[keybindKey].label}
             onClick={() => setSelectedOption(keybindKey)}
+            type="keyboard"
             key={keybindKey}
           />
         ))}

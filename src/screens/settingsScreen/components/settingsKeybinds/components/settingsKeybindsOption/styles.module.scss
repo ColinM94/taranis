@@ -5,7 +5,7 @@
   cursor: pointer;
   align-items: stretch;
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
 
   .label {
     flex: 1;
@@ -18,9 +18,18 @@
 
   .value {
     flex: 1;
+    flex-shrink: 1;
     background-color: vars.$color-surface2;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
+    padding-left: vars.$spacing-tertiary;
+    padding-right: vars.$spacing-tertiary;
+    overflow-wrap: break-word;
+    overflow: hidden;
+  }
+
+  .selectionValue {
   }
 }
 

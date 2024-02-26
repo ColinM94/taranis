@@ -2,7 +2,6 @@ import { Enemy, Player } from "entities";
 import { useGameStore, useInput } from "store";
 import { navigate } from "utils";
 
-const { setIsPaused } = useGameStore.getState();
 const { createCallback } = useInput.getState();
 
 export class MainGame extends Phaser.Scene {
