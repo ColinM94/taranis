@@ -1,8 +1,10 @@
 import { createZustandStore } from "./createZustandStore";
 
 interface GameState {
-  game: Phaser.Scene | null;
-  setGame: (game: Phaser.Scene) => void;
+  activeScreen: string;
+  setActiveScreen: (activeScreen: string) => void;
+  game: Phaser.Game | null;
+  setGame: (game: Phaser.Game) => void;
   isPaused: boolean;
   setIsPaused: (isPaused: boolean) => void;
   showHud: boolean;
@@ -16,6 +18,8 @@ interface GameState {
 export const useGameStore = createZustandStore<GameState>({
   name: "game",
   data: (set) => ({
+    activeScreen: "preloader",
+    setActiveScreen: (activeScreen) => set({ activeScreen }),
     game: null,
     setGame: (game) => set({ game }),
     isPaused: false,

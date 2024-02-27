@@ -1,0 +1,40 @@
+.container {
+  align-items: center;
+  flex: 1;
+
+  .gameName {
+    font-size: 10rem;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .loader {
+    flex: 1;
+    width: 100%;
+    align-items: center;
+
+    .loadingText {
+      font-size: vars.$font-size-h1;
+      margin-bottom: vars.$spacing-tertiary;
+    }
+
+    .loadingDots {
+      position: absolute;
+      right: -50%;
+    }
+
+    .progressBar {
+      background-color: vars.$color-surface;
+      width: min(100%, 500px);
+      height: 50px;
+      border-radius: vars.$roundness;
+
+      .progressBarInner {
+        background-color: vars.$color-success;
+        height: 100%;
+        border-radius: vars.$roundness;
+      }
+    }
+  }
+}

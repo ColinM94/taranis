@@ -1,9 +1,7 @@
 import * as React from "react";
 import Phaser from "phaser";
 
-import { Boot, Preloader, MainGame } from "scenes";
 import { classes } from "utils";
-import { useGameStore } from "store";
 
 import styles from "./styles/game.module.scss";
 
@@ -25,7 +23,7 @@ const config: Phaser.Types.Core.GameConfig = {
     },
   },
 
-  scene: [Boot, Preloader, MainGame],
+  // scene: [Preloader, MainGame],
 };
 
 interface Props {

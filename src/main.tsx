@@ -1,18 +1,23 @@
-import { Hud, PauseMenu } from "components";
 import { useGameStore } from "store";
-import { MainMenuScreen, SettingsScreen } from "screens";
+import { MainMenuScreen } from "screens";
 import "styles/global.scss";
 
 import styles from "./styles/main.module.scss";
-import { Controls } from "./controls";
+import { PreloaderScreen } from "screens/preloaderScreen/preloaderScreen";
 
 export const Main = () => {
-  const { showSettingsMenu, showHud, isPaused, showMainMenu } = useGameStore();
+  const { activeScreen } = useGameStore();
 
   return (
     <div className={styles.container}>
-      <Controls />
-      {/* <Game className={styles.game} /> */}
+      <div className={styles.game} id="gameContainer" />
+
+      <div className={styles.ui}>
+        {activeScreen === "preloader" && <PreloaderScreen />}
+        {activeScreen === "mainMenu" && <MainMenuScreen />}
+      </div>
+      {/* <Controls />
+      <Game className={styles.game} />
 
       <div className={styles.ui}>
         {(showMainMenu || isPaused || showSettingsMenu) && (
@@ -27,7 +32,7 @@ export const Main = () => {
             {showHud && <Hud />} {isPaused && <PauseMenu />}
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
