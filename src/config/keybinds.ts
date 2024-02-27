@@ -3,6 +3,8 @@ import { Bind, Keybind } from "types";
 export type KeybindKey =
   | "moveLeft"
   | "moveRight"
+  | "moveUp"
+  | "moveDown"
   | "jump"
   | "attack"
   | "attackSecondary"
@@ -92,17 +94,21 @@ export const keyNames: Record<Bind, string> = {
 
 export const keybinds: Record<KeybindKey, Keybind> = {
   moveLeft: {
-    binds: [
-      "keyboard:ArrowLeft",
-      "keyboard:KeyA",
-      "controller:1",
-      "controller:2",
-    ],
+    binds: ["keyboard:ArrowLeft", "keyboard:KeyA", "controller:14"],
     label: "Move Left",
   },
   moveRight: {
-    binds: ["keyboard:ArrowLeft", "keyboard:KeyD", "controller:3"],
+    binds: ["keyboard:ArrowLeft", "keyboard:KeyD", "controller:15"],
     label: "Move Right",
+  },
+  moveUp: {
+    // Dpad UP
+    binds: ["keyboard:ArrowUp", "keyboard:KeyW", "controller:12"],
+    label: "Move Up",
+  },
+  moveDown: {
+    binds: ["keyboard:ArrowDown", "keyboard:KeyS", "controller:13"],
+    label: "Move Down",
   },
   jump: {
     binds: ["keyboard:Space", "controller:0"],
@@ -145,7 +151,7 @@ export const keybinds: Record<KeybindKey, Keybind> = {
     rebindable: false,
   },
   uiSelect: {
-    binds: [],
+    binds: ["keyboard:Enter"],
     label: "UI Select",
     rebindable: false,
   },

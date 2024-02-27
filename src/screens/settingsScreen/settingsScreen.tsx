@@ -1,3 +1,5 @@
+import * as React from "react";
+
 import { navigate } from "utils";
 import { useInput } from "store";
 
@@ -5,7 +7,6 @@ import { SettingsKeybinds } from "./components/settingsKeybinds/settingsKeybinds
 import { SettingsControllers } from "./components/settingsControllers/settingsControllers";
 
 import styles from "./styles.module.scss";
-import React from "react";
 
 export const SettingsScreen = () => {
   const input = useInput();
@@ -13,10 +14,6 @@ export const SettingsScreen = () => {
   const handleClose = () => {
     navigate("mainMenu");
   };
-
-  React.useEffect(() => {
-    console.log("SettingsScreen mounted", input.callbacks);
-  }, [input.callbacks]);
 
   return (
     <>

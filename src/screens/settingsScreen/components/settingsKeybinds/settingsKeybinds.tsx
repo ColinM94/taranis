@@ -79,15 +79,17 @@ export const SettingsKeybinds = ({ className }: Props) => {
     return () => clearInterval(interval);
   }, [selectedOption]);
 
-  console.log(input["jump"].binds);
-
   const rows = React.useMemo(() => {
     return keybindKeys.map((keybindKey) => {
       const keybind = input[keybindKey];
 
       if (keybind.rebindable === false) return null;
 
-      const row = [<div className={styles.rowLabel}>{keybind.label}</div>];
+      const row = [
+        <div key={`${keybindKey}-label`} className={styles.rowLabel}>
+          {keybind.label}
+        </div>,
+      ];
 
       for (let i = 0; i < 3; i++) {
         const isSelected =

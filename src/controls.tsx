@@ -29,8 +29,6 @@ export const Controls = () => {
     return tempKeyMap;
   }, []);
 
-  console.log(keyMap);
-
   const handlePress = (key: Bind, isPressed: boolean) => {
     const input = useInput.getState();
     const keys = keyMap.get(key);

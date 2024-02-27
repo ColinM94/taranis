@@ -1,45 +1,31 @@
 import * as React from "react";
-import Phaser from "phaser";
+import { Stage } from "@pixi/react";
 
 import { classes } from "utils";
 
 import styles from "./styles/game.module.scss";
 
-const config: Phaser.Types.Core.GameConfig = {
-  type: Phaser.WEBGL,
-  parent: "gameContainer",
-  scale: {
-    mode: Phaser.Scale.RESIZE,
-  },
-  render: {
-    transparent: true,
-  },
-  pixelArt: true,
-  physics: {
-    default: "arcade",
-    arcade: {
-      gravity: { y: 1000 },
-      debug: true,
-    },
-  },
-
-  // scene: [Preloader, MainGame],
-};
-
 interface Props {
+  children: React.ReactNode;
   className?: string;
 }
 
-export const Game = ({ className }: Props) => {
-  React.useEffect(() => {
-    const game = new Phaser.Game(config);
-
-    return () => {
-      game.destroy(true);
-    };
-  }, []);
+export const Game = ({ children, className }: Props) => {
+  const [windowSize, setWindowSize] = React.useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
   return (
-    <div className={classes(styles.container, className)} id="gameContainer" />
+    <Stage
+      height={windowSize.height}
+      width={windowSize.width}
+      options={{
+        backgroundColor: 0x000000,
+      }}
+      className={classes(styles.container, className)}
+    >
+      {children}
+    </Stage>
   );
 };
