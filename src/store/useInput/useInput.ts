@@ -45,5 +45,4 @@ export const useInput = createZustandStore<Keybinds & Actions>({
       set(keybinds);
     },
   }),
-  persistState: true,
 });

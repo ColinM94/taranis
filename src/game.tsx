@@ -11,17 +11,14 @@ interface Props {
 }
 
 export const Game = ({ children, className }: Props) => {
-  const [windowSize, setWindowSize] = React.useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
   return (
     <Stage
-      height={windowSize.height}
-      width={windowSize.width}
+      height={window.innerHeight}
+      width={window.innerWidth}
       options={{
         backgroundColor: 0x000000,
+        antialias: false,
+        resizeTo: window,
       }}
       className={classes(styles.container, className)}
     >

@@ -1,121 +1,70 @@
 import * as React from "react";
-import * as PIXI from "pixi.js";
-import Pixie, { Container, Stage, Text, useTick, Graphics } from "@pixi/react";
+import { Container, useTick } from "@pixi/react";
+
+import { Player } from "entities";
+import { useInput } from "store";
+import { navigate, reactReducer } from "utils";
 
 import { GameScreenProps } from "./types";
-import styles from "./styles.module.scss";
-import { reactReducer } from "utils";
-import { useInput, useInput2 } from "store";
+import { Torch } from "entities/torch/torch";
 
 export const GameScreen = ({}: GameScreenProps) => {
-  const [square, updateSquare] = reactReducer({
+  const input = useInput();
+
+  const [state, updateState] = reactReducer({
     x: 0,
     y: 0,
-    width: 150,
-    height: 150,
+    flipx: false,
   });
 
-  const [square2, updateSquare2] = reactReducer({
-    x: 0,
-    y: 0,
-    width: 150,
-    height: 150,
-  });
+  React.useEffect(() => {
+    const unsubscribe = input.createCallback("pause", () => {
+      navigate("mainMenu");
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   useTick(() => {
     const input = useInput.getState();
 
     let xChange = 0;
     let yChange = 0;
+    let flipped = state.flipx;
+    const speed = 5;
 
     if (input.moveLeft.isPressed) {
-      xChange -= 1;
-    }
-
-    if (input.moveRight.isPressed) {
-      xChange += 1;
+      xChange += speed;
+      flipped = true;
+    } else if (input.moveRight.isPressed) {
+      xChange -= speed;
+      flipped = false;
     }
 
     if (input.moveUp.isPressed) {
-      yChange -= 1;
-    }
-
-    if (input.moveDown.isPressed) {
-      console.log("down");
-      yChange += 1;
+      yChange += speed;
+    } else if (input.moveDown.isPressed) {
+      yChange -= speed;
     }
 
     if (xChange || yChange) {
-      updateSquare({
-        x: square.x + xChange,
-        y: square.y + yChange,
+      updateState({
+        x: state.x + xChange,
+        y: state.y + yChange,
+        flipx: flipped,
       });
     }
   });
-
-  useTick(() => {
-    const input = useInput2.getState();
-
-    let xChange = 0;
-    let yChange = 0;
-
-    if (input.moveLeft.isPressed) {
-      xChange -= 1;
-    }
-
-    if (input.moveRight.isPressed) {
-      xChange += 1;
-    }
-
-    if (input.moveUp.isPressed) {
-      yChange -= 1;
-    }
-
-    if (input.moveDown.isPressed) {
-      console.log("down");
-      yChange += 1;
-    }
-
-    if (xChange || yChange) {
-      updateSquare({
-        x: square.x + xChange,
-        y: square.y + yChange,
-      });
-    }
-  });
-
-  const drawSquare = (
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    color: number
-  ) => {
-    return (
-      <Graphics
-        x={x}
-        y={y}
-        draw={(g) => {
-          g.beginFill(color);
-          g.drawRect(50, 50, height, width);
-          g.endFill();
-        }}
-      />
-    );
-  };
 
   return (
-    <Container x={100} y={100}>
-      {/* <Graphics draw={draw} /> */}
-
-      {drawSquare(square.x, square.y, square.width, square.height, 0xff3300)}
-      {drawSquare(
-        square2.x,
-        square2.y,
-        square2.width,
-        square2.height,
-        0x0000ff
-      )}
+    <Container x={state.x} y={state.y}>
+      <Torch x={50} y={50} />
+      <Torch x={200} y={50} />
+      <Torch x={600} y={50} />
+      <Torch x={750} y={50} />
+      <Player x={500} y={500} />
     </Container>
   );
 };

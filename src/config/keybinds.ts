@@ -3,8 +3,8 @@ import { Bind, Keybind } from "types";
 export type KeybindKey =
   | "moveLeft"
   | "moveRight"
-  | "moveUp"
   | "moveDown"
+  | "moveUp"
   | "jump"
   | "attack"
   | "attackSecondary"
@@ -20,10 +20,10 @@ export type KeybindKey =
 export const controllerButtonNames = {};
 
 export const keyNames: Record<Bind, string> = {
-  "keyboard:ArrowLeft": "Left Arrow",
-  "keyboard:ArrowRight": "Right Arrow",
-  "keyboard:ArrowUp": "Up Arrow",
-  "keyboard:ArrowDown": "Down Arrow",
+  "keyboard:ArrowLeft": "←",
+  "keyboard:ArrowRight": "→",
+  "keyboard:ArrowUp": "↑",
+  "keyboard:ArrowDown": "↓",
   "keyboard:KeyA": "A",
   "keyboard:KeyB": "B",
   "keyboard:KeyC": "C",
@@ -94,21 +94,25 @@ export const keyNames: Record<Bind, string> = {
 
 export const keybinds: Record<KeybindKey, Keybind> = {
   moveLeft: {
-    binds: ["keyboard:ArrowLeft", "keyboard:KeyA", "controller:14"],
+    binds: [
+      "keyboard:ArrowLeft",
+      "keyboard:KeyA",
+      "controller:1",
+      "controller:2",
+    ],
     label: "Move Left",
   },
   moveRight: {
-    binds: ["keyboard:ArrowLeft", "keyboard:KeyD", "controller:15"],
+    binds: ["keyboard:ArrowRight", "keyboard:KeyD", "controller:3"],
     label: "Move Right",
   },
-  moveUp: {
-    // Dpad UP
-    binds: ["keyboard:ArrowUp", "keyboard:KeyW", "controller:12"],
-    label: "Move Up",
-  },
   moveDown: {
-    binds: ["keyboard:ArrowDown", "keyboard:KeyS", "controller:13"],
+    binds: ["keyboard:ArrowDown", "keyboard:KeyS", "controller:0"],
     label: "Move Down",
+  },
+  moveUp: {
+    binds: ["keyboard:ArrowUp", "keyboard:KeyW", "controller:0"],
+    label: "Move Up",
   },
   jump: {
     binds: ["keyboard:Space", "controller:0"],
@@ -127,37 +131,31 @@ export const keybinds: Record<KeybindKey, Keybind> = {
     label: "Tertiary Attack",
   },
   pause: {
-    binds: [],
+    binds: ["keyboard:Escape"],
     label: "Pause",
   },
   uiUp: {
     binds: ["keyboard:ArrowUp", "keyboard:KeyW"],
     label: "UI Up",
-    rebindable: false,
   },
   uiDown: {
     binds: ["keyboard:ArrowDown", "keyboard:KeyS"],
     label: "UI Down",
-    rebindable: false,
   },
   uiLeft: {
     binds: [],
     label: "UI Left",
-    rebindable: false,
   },
   uiRight: {
     binds: [],
     label: "UI Right",
-    rebindable: false,
   },
   uiSelect: {
-    binds: ["keyboard:Enter"],
+    binds: [],
     label: "UI Select",
-    rebindable: false,
   },
   uiBack: {
     binds: [],
     label: "UI Back",
-    rebindable: false,
   },
 };

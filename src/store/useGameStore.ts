@@ -22,13 +22,13 @@ interface GameState {
 export const useGameStore = createZustandStore<GameState>({
   name: "game",
   data: (set) => ({
-    activeScreen: { name: "game", params: undefined },
+    activeScreen: { name: "game", params: undefined } as any,
     setActiveScreen: (name, params) =>
       set({
         activeScreen: {
           name,
           params,
-        },
+        } as any,
       }),
     game: null,
     setGame: (game) => set({ game }),
