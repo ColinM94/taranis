@@ -18,6 +18,24 @@ export const MainMenuScreen = ({ showClickToStart }: MainMenuScreenProps) => {
   const [selectedButton, setSelectedButton] = React.useState(0);
   const [showMenu, setShowMenu] = React.useState(!showClickToStart);
 
+  const handleQuit = () => {
+    if (window.confirm("Are you sure you want to quit?")) {
+      window.close();
+    }
+  };
+
+  console.log("currentValue", selectedButton);
+
+  console.log(input.callbacks);
+
+  const handleNavigate = React.useCallback(() => {
+    console.log("navigateTo", selectedButton);
+
+    if (selectedButton === 0) navigate("game");
+    if (selectedButton === 1) navigate("settings");
+    if (selectedButton === 2) handleQuit();
+  }, [selectedButton]);
+
   React.useEffect(() => {
     const unsubscribe = input.createCallback("uiUp", () => {
       setSelectedButton((prev) => Math.max(0, prev - 1));
@@ -28,9 +46,7 @@ export const MainMenuScreen = ({ showClickToStart }: MainMenuScreenProps) => {
     });
 
     const unsubscribe3 = input.createCallback("uiSelect", () => {
-      if (selectedButton === 0) navigate("game");
-      // if (selectedButton === 1) showSettings();
-      // if (selectedButton === 2) quitGame();
+      handleNavigate();
     });
 
     return () => {
@@ -38,7 +54,7 @@ export const MainMenuScreen = ({ showClickToStart }: MainMenuScreenProps) => {
       unsubscribe2();
       unsubscribe3();
     };
-  }, []);
+  }, [selectedButton]);
 
   React.useEffect(() => {
     if (showMenu) {
@@ -96,9 +112,7 @@ export const MainMenuScreen = ({ showClickToStart }: MainMenuScreenProps) => {
           <Button
             label="Quit"
             type="text"
-            onClick={function (): void {
-              throw new Error("Function not implemented.");
-            }}
+            onClick={handleQuit}
             onMouseOver={() => setSelectedButton(2)}
             className={classes(
               styles.button,

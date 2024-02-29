@@ -15,6 +15,16 @@ export const SettingsScreen = () => {
     navigate("mainMenu");
   };
 
+  React.useEffect(() => {
+    const unsubscribe = input.createCallback("uiBack", () => {
+      navigate("mainMenu");
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   return (
     <>
       <div onClick={handleClose} className={styles.backButton}>

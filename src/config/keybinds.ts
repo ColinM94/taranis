@@ -17,8 +17,6 @@ export type KeybindKey =
   | "uiSelect"
   | "uiBack";
 
-export const controllerButtonNames = {};
-
 export const keyNames: Record<Bind, string> = {
   "keyboard:ArrowLeft": "←",
   "keyboard:ArrowRight": "→",
@@ -94,24 +92,19 @@ export const keyNames: Record<Bind, string> = {
 
 export const keybinds: Record<KeybindKey, Keybind> = {
   moveLeft: {
-    binds: [
-      "keyboard:ArrowLeft",
-      "keyboard:KeyA",
-      "controller:1",
-      "controller:2",
-    ],
+    binds: ["keyboard:ArrowLeft", "keyboard:KeyA", "controller:14"],
     label: "Move Left",
   },
   moveRight: {
-    binds: ["keyboard:ArrowRight", "keyboard:KeyD", "controller:3"],
+    binds: ["keyboard:ArrowRight", "keyboard:KeyD", "controller:15"],
     label: "Move Right",
   },
   moveDown: {
-    binds: ["keyboard:ArrowDown", "keyboard:KeyS", "controller:0"],
+    binds: ["keyboard:ArrowDown", "keyboard:KeyS", "controller:13"],
     label: "Move Down",
   },
   moveUp: {
-    binds: ["keyboard:ArrowUp", "keyboard:KeyW", "controller:0"],
+    binds: ["keyboard:ArrowUp", "keyboard:KeyW", "controller:12"],
     label: "Move Up",
   },
   jump: {
@@ -131,31 +124,31 @@ export const keybinds: Record<KeybindKey, Keybind> = {
     label: "Tertiary Attack",
   },
   pause: {
-    binds: ["keyboard:Escape"],
+    binds: ["keyboard:Escape", "controller:9"],
     label: "Pause",
   },
   uiUp: {
-    binds: ["keyboard:ArrowUp", "keyboard:KeyW"],
+    binds: ["keyboard:ArrowUp", "keyboard:KeyW", "controller:12"],
     label: "UI Up",
   },
   uiDown: {
-    binds: ["keyboard:ArrowDown", "keyboard:KeyS"],
+    binds: ["keyboard:ArrowDown", "keyboard:KeyS", "controller:13"],
     label: "UI Down",
   },
   uiLeft: {
-    binds: [],
+    binds: ["keyboard:ArrowLeft", "controller:14"],
     label: "UI Left",
   },
   uiRight: {
-    binds: [],
+    binds: ["keyboard:ArrowRight", "controller:15"],
     label: "UI Right",
   },
   uiSelect: {
-    binds: [],
+    binds: ["keyboard:Enter", "controller:0"],
     label: "UI Select",
   },
   uiBack: {
-    binds: [],
+    binds: ["keyboard:Escape", "controller:1", "controller:8"],
     label: "UI Back",
   },
 };

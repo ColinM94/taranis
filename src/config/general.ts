@@ -1,1 +1,1 @@
-export const gameName = "Taranis";
+export const gameName = "Hogwurtz Leguucyy";

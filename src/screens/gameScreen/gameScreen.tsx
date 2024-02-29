@@ -1,12 +1,14 @@
 import * as React from "react";
 import { Container, useTick } from "@pixi/react";
 
-import { Player } from "entities";
+import { Player, StaticObject } from "entities";
 import { useInput } from "store";
 import { navigate, reactReducer } from "utils";
+import { Torch } from "entities/torch/torch";
+import chest from "assets/sprites/chest.png";
+import * as PIXI from "pixi.js";
 
 import { GameScreenProps } from "./types";
-import { Torch } from "entities/torch/torch";
 
 export const GameScreen = ({}: GameScreenProps) => {
   const input = useInput();
@@ -60,10 +62,14 @@ export const GameScreen = ({}: GameScreenProps) => {
 
   return (
     <Container x={state.x} y={state.y}>
-      <Torch x={50} y={50} />
+      {/* <Torch x={50} y={50} />
       <Torch x={200} y={50} />
-      <Torch x={600} y={50} />
-      <Torch x={750} y={50} />
+      <Torch x={600} y={50} /> */}
+      <Container x={0} y={0}>
+        <Torch x={-60} y={-90} />
+        <StaticObject x={0} y={0} texture={PIXI.Texture.from(chest)} />
+        <Torch x={200} y={50} />
+      </Container>
       <Player x={500} y={500} />
     </Container>
   );
