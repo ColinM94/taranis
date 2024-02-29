@@ -1,11 +1,12 @@
 import * as React from "react";
-import { Container, Sprite, useTick } from "@pixi/react";
-
 import * as Pixi from "pixi.js";
+import { Container, Sprite, useTick, AnimatedSprite } from "@pixi/react";
+
+import { useInput } from "store";
 import { reactReducer } from "utils";
 import player from "assets/sprites/player.png";
 import sword from "assets/sprites/sword.png";
-import { useInput } from "store";
+import torch from "assets/sprites/torch.png";
 
 interface Props {
   x: number;
@@ -14,6 +15,10 @@ interface Props {
 
 export const Player = (props: Props) => {
   const input = useInput();
+
+  const [texture, setTexture] = React.useState<Pixi.Texture>();
+  const [textures, setTextures] = React.useState<Pixi.Texture[]>([]);
+  const [direction, setDirection] = React.useState<"down" | "up">();
 
   const [state, updateState] = reactReducer({
     x: props.x,
@@ -25,7 +30,37 @@ export const Player = (props: Props) => {
     rotation: 1,
   });
 
+  React.useEffect(() => {
+    const widthOfEachSprite = 144;
+    const height = 448;
+
+    const texture: Pixi.BaseTexture<Pixi.Resource, Pixi.IAutoDetectOptions> =
+      Pixi.BaseTexture.from(player);
+
+    const texture1 = new Pixi.Texture(
+      texture,
+      new Pixi.Rectangle(0, 0, widthOfEachSprite, height)
+    );
+    const texture2 = new Pixi.Texture(
+      texture,
+      new Pixi.Rectangle(widthOfEachSprite, 0, widthOfEachSprite, height)
+    );
+    const texture3 = new Pixi.Texture(
+      texture,
+      new Pixi.Rectangle(widthOfEachSprite * 2, 0, widthOfEachSprite, height)
+    );
+    const texture4 = new Pixi.Texture(
+      texture,
+      new Pixi.Rectangle(widthOfEachSprite * 3, 0, widthOfEachSprite, height)
+    );
+
+    setTextures([texture1, texture2, texture3, texture4]);
+    setTexture(texture1);
+  }, []);
+
   useTick(() => {
+    if (textures.length === 0) return;
+
     const input = useInput.getState();
 
     let xChange = 0;
@@ -33,12 +68,28 @@ export const Player = (props: Props) => {
     let flipped = state.flipx;
     const speed = 5;
 
+    if (input.moveDown.isPressed && input.moveLeft.isPressed) {
+      setTexture(textures[0]);
+      flipped = false;
+      setDirection("down");
+    } else if (input.moveDown.isPressed && input.moveRight.isPressed) {
+      setTexture(textures[0]);
+      flipped = true;
+      setDirection("down");
+    } else if (input.moveUp.isPressed && input.moveRight.isPressed) {
+      setTexture(textures[2]);
+      flipped = false;
+      setDirection("up");
+    } else if (input.moveUp.isPressed && input.moveLeft.isPressed) {
+      setTexture(textures[2]);
+      flipped = true;
+      setDirection("up");
+    }
+
     if (input.moveLeft.isPressed) {
       xChange -= speed;
-      flipped = true;
     } else if (input.moveRight.isPressed) {
       xChange += speed;
-      flipped = false;
     }
 
     if (input.moveUp.isPressed) {
@@ -59,14 +110,16 @@ export const Player = (props: Props) => {
   React.useEffect(() => {
     if (input.attack.isPressed) {
       setWeapon({
-        rotation: weapon.rotation - 5,
+        rotation: direction === "up" ? weapon.rotation - 5 : 10,
       });
     } else {
       setWeapon({
-        rotation: 1,
+        rotation: direction === "up" ? 1 : -1,
       });
     }
   }, [input.attack.isPressed]);
+
+  if (!texture) return null;
 
   return (
     <Container
@@ -74,13 +127,14 @@ export const Player = (props: Props) => {
       y={state.y}
       scale={{
         x: state.flipx ? -0.5 : 0.5,
+        // x: 0.5,
         y: 0.5,
       }}
     >
       <Sprite
-        texture={Pixi.Texture.from(player)}
         x={0}
         y={0}
+        texture={texture}
         anchor={{
           x: 0.5,
           y: 0.5,
@@ -89,7 +143,7 @@ export const Player = (props: Props) => {
 
       <Sprite
         texture={Pixi.Texture.from(sword)}
-        position={{ x: 80, y: 100 }}
+        position={{ x: 20, y: 80 }}
         rotation={weapon.rotation}
         scale={0.7}
         anchor={{
