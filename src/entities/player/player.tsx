@@ -1,12 +1,11 @@
 import * as React from "react";
 import * as Pixi from "pixi.js";
-import { Container, Sprite, useTick, AnimatedSprite } from "@pixi/react";
+import { Container, Sprite, useTick } from "@pixi/react";
 
 import { useInput } from "store";
 import { reactReducer } from "utils";
 import player from "assets/sprites/player.png";
 import sword from "assets/sprites/sword.png";
-import torch from "assets/sprites/torch.png";
 
 interface Props {
   x: number;
@@ -101,7 +100,7 @@ export const Player = (props: Props) => {
     if (xChange || yChange) {
       updateState({
         x: state.x + xChange,
-        y: state.y + yChange,
+        y: state.y + yChange / 2,
         flipx: flipped,
       });
     }
@@ -139,6 +138,7 @@ export const Player = (props: Props) => {
           x: 0.5,
           y: 0.5,
         }}
+        zIndex={1}
       />
 
       <Sprite
