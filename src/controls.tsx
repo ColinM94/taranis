@@ -6,6 +6,7 @@ import { KeybindKey, keybinds } from "config";
 
 export const Controls = () => {
   const controllers = useControllerStore();
+  const mouseWheelTimeout = React.useRef<number | null>(null);
 
   const tempState = React.useRef<Keybinds>({
     ...keybinds,
@@ -66,6 +67,18 @@ export const Controls = () => {
     handlePress(`mouse:${e.button}` as Bind, false);
   };
 
+  const handleMouseWheel = (e: WheelEvent) => {
+    if (e.deltaY > 0) handlePress(`mouse:WheelDown` as Bind, true);
+    else if (e.deltaY < 0) handlePress(`mouse:WheelUp` as Bind, true);
+
+    mouseWheelTimeout.current && clearTimeout(mouseWheelTimeout.current);
+
+    mouseWheelTimeout.current = setTimeout(() => {
+      handlePress(`mouse:WheelDown` as Bind, false);
+      handlePress(`mouse:WheelUp` as Bind, false);
+    }, 50);
+  };
+
   const handleContextMenu = (e: MouseEvent) => {
     e.preventDefault();
   };
@@ -105,7 +118,8 @@ export const Controls = () => {
     window.addEventListener("keyup", handleKeyboardUp);
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
-    document.addEventListener("contextmenu", handleContextMenu);
+    window.addEventListener("contextmenu", handleContextMenu);
+    window.addEventListener("wheel", handleMouseWheel);
 
     window.addEventListener("gamepadconnected", handleControllerConnected);
     window.addEventListener(
@@ -118,12 +132,13 @@ export const Controls = () => {
       window.removeEventListener("keyup", handleKeyboardUp);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
-      document.addEventListener("contextmenu", handleContextMenu);
+      window.addEventListener("contextmenu", handleContextMenu);
       window.removeEventListener("gamepadconnected", handleControllerConnected);
       window.removeEventListener(
         "gamepaddisconnected",
         handleControllerDisconnected
       );
+      window.removeEventListener("wheel", handleMouseWheel);
     };
   }, []);
 

@@ -15,7 +15,9 @@ export type KeybindKey =
   | "uiLeft"
   | "uiRight"
   | "uiSelect"
-  | "uiBack";
+  | "uiBack"
+  | "zoomIn"
+  | "zoomOut";
 
 export const keyNames: Record<Bind, string> = {
   "keyboard:ArrowLeft": "←",
@@ -63,6 +65,8 @@ export const keyNames: Record<Bind, string> = {
   "keyboard:Backspace": "Backspace",
   "keyboard:Tab": "Tab",
   "keyboard:Space": "Space",
+  "keyboard:Minus": "-",
+  "keyboard:Equal": "=",
   "controller:0": "A",
   "controller:1": "B",
   "controller:2": "X",
@@ -88,6 +92,8 @@ export const keyNames: Record<Bind, string> = {
   "mouse:6": "Mouse ",
   "mouse:7": "",
   "keyboard:Keyß": "",
+  "mouse:WheelUp": "",
+  "mouse:WheelDown": "",
 };
 
 export const keybinds: Record<KeybindKey, Keybind> = {
@@ -150,5 +156,13 @@ export const keybinds: Record<KeybindKey, Keybind> = {
   uiBack: {
     binds: ["keyboard:Escape", "controller:1", "controller:8"],
     label: "UI Back",
+  },
+  zoomIn: {
+    binds: ["keyboard:Equal", "mouse:WheelUp"],
+    label: "Zoom In",
+  },
+  zoomOut: {
+    binds: ["keyboard:Minus", "mouse:WheelDown"],
+    label: "Zoom Out",
   },
 };

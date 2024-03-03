@@ -1,23 +1,27 @@
 import * as React from "react";
-import { Container, useTick } from "@pixi/react";
+import { Container, useApp, useTick } from "@pixi/react";
 
 import { Player, StaticObject } from "entities";
 import { useInput } from "store";
 import { navigate, reactReducer } from "utils";
 import { Torch } from "entities/torch/torch";
 import chest from "assets/sprites/chest.png";
+import { Tile } from "entities/tile/tile";
 import * as PIXI from "pixi.js";
 
 import { GameScreenProps } from "./types";
-import { Tile } from "entities/tile.tsx/tile";
 
 export const GameScreen = ({}: GameScreenProps) => {
   const input = useInput();
+
+  const app = useApp();
 
   const [state, updateState] = reactReducer({
     x: 0,
     y: 0,
     flipx: false,
+    width: window.innerWidth,
+    height: window.innerHeight,
   });
 
   React.useEffect(() => {
@@ -57,6 +61,22 @@ export const GameScreen = ({}: GameScreenProps) => {
         x: state.x + xChange,
         y: state.y + yChange / 2,
         flipx: flipped,
+      });
+    }
+
+    const zoomFactor = 0.1;
+
+    if (input.zoomIn.isPressed) {
+      updateState({
+        width: state.width - state.width * zoomFactor,
+        height: state.height - state.width * zoomFactor,
+      });
+    }
+
+    if (input.zoomOut.isPressed) {
+      updateState({
+        width: state.width + state.width * zoomFactor,
+        height: state.height + state.width * zoomFactor,
       });
     }
   });
@@ -117,6 +137,7 @@ export const GameScreen = ({}: GameScreenProps) => {
             height={height}
             width={width}
             coordinates={{ x, y }}
+            center={center}
           />
         );
       }
@@ -125,8 +146,42 @@ export const GameScreen = ({}: GameScreenProps) => {
     return tiles;
   }, [grid]);
 
+  // React.useEffect(() => {
+  //   const unsubscribe = input.createCallback("zoomOut", () => {
+  //     console.log("zoomOut");
+
+  //     updateState({
+  //       width: state.width * 1.1,
+  //       height: state.height * 1.1,
+  //     });
+  //   });
+
+  //   const unsubscribe2 = input.createCallback("zoomIn", () => {
+  //     console.log("zoomIn");
+
+  //     updateState({
+  //       width: state.width * -1.1,
+  //       height: state.height * -1.1,
+  //     });
+  //   });
+
+  //   return () => {
+  //     unsubscribe();
+  //     unsubscribe2();
+  //   };
+  // }, [state.width, state.height]);
+
   return (
-    <Container x={state.x} y={state.y}>
+    <Container
+      x={state.x}
+      y={state.y}
+      height={state.height}
+      width={state.width}
+      anchor={{
+        x: 0.5,
+        y: 0.5,
+      }}
+    >
       {renderGrid}
       {/* <Torch x={50} y={50} />
       <Torch x={200} y={50} />
@@ -136,7 +191,20 @@ export const GameScreen = ({}: GameScreenProps) => {
         <StaticObject x={0} y={0} texture={PIXI.Texture.from(chest)} />
         <Torch x={200} y={50} />
       </Container>
-      <Player x={500} y={500} />
+
+      <Player
+        x={5000}
+        y={250}
+        // updatePosition={(x, y, width, height) => {
+        //   const newX = x * -1 + state.width / 2;
+        //   const newY = y * -1 + state.height / 2;
+
+        //   updateState({
+        //     x: newX,
+        //     y: newY,
+        //   });
+        // }}
+      />
     </Container>
   );
 };

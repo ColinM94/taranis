@@ -70,7 +70,11 @@ export type Bind =
   | "keyboard:ArrowDown"
   | "keyboard:ArrowLeft"
   | "keyboard:ArrowRight"
-  | "keyboard:Keyß";
+  | "keyboard:Keyß"
+  | "keyboard:Minus"
+  | "keyboard:Equal"
+  | "mouse:WheelDown"
+  | "mouse:WheelUp";
 
 export interface Keybind {
   binds: Bind[];

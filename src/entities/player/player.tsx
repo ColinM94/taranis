@@ -10,6 +10,7 @@ import sword from "assets/sprites/sword.png";
 interface Props {
   x: number;
   y: number;
+  updatePosition: (x: number, y: number, width: number, height: number) => void;
 }
 
 export const Player = (props: Props) => {
@@ -23,6 +24,8 @@ export const Player = (props: Props) => {
     x: props.x,
     y: props.y,
     flipx: false,
+    height: 0,
+    width: 0,
   });
 
   const [weapon, setWeapon] = reactReducer({
@@ -32,6 +35,11 @@ export const Player = (props: Props) => {
   React.useEffect(() => {
     const widthOfEachSprite = 144;
     const height = 448;
+
+    updateState({
+      width: widthOfEachSprite,
+      height,
+    });
 
     const texture: Pixi.BaseTexture<Pixi.Resource, Pixi.IAutoDetectOptions> =
       Pixi.BaseTexture.from(player);
@@ -85,26 +93,30 @@ export const Player = (props: Props) => {
       setDirection("up");
     }
 
-    if (input.moveLeft.isPressed) {
-      xChange -= speed;
-    } else if (input.moveRight.isPressed) {
-      xChange += speed;
-    }
+    // if (input.moveLeft.isPressed) {
+    //   xChange -= speed;
+    // } else if (input.moveRight.isPressed) {
+    //   xChange += speed;
+    // }
 
-    if (input.moveUp.isPressed) {
-      yChange -= speed;
-    } else if (input.moveDown.isPressed) {
-      yChange += speed;
-    }
+    // if (input.moveUp.isPressed) {
+    //   yChange -= speed;
+    // } else if (input.moveDown.isPressed) {
+    //   yChange += speed;
+    // }
 
-    if (xChange || yChange) {
-      updateState({
-        x: state.x + xChange,
-        y: state.y + yChange / 2,
-        flipx: flipped,
-      });
-    }
+    // if (xChange || yChange) {
+    //   updateState({
+    //     x: state.x + xChange,
+    //     y: state.y + yChange / 2,
+    //     flipx: flipped,
+    //   });
+    // }
   });
+
+  // React.useEffect(() => {
+  //   props.updatePosition(state.x, state.y, state.width, state.height);
+  // }, [state.x, state.y]);
 
   React.useEffect(() => {
     if (input.attack.isPressed) {
@@ -126,7 +138,6 @@ export const Player = (props: Props) => {
       y={state.y}
       scale={{
         x: state.flipx ? -0.5 : 0.5,
-        // x: 0.5,
         y: 0.5,
       }}
     >

@@ -6,4 +6,5 @@ export interface Props {
   height: number;
   width: number;
   coordinates: { x: number; y: number };
+  center: { x: number; y: number };
 }

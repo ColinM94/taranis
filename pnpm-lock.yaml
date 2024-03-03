@@ -8,9 +8,6 @@ dependencies:
   '@pixi/react':
     specifier: ^7.1.1
     version: 7.1.1(@babel/runtime@7.23.9)(@pixi/app@7.4.0)(@pixi/constants@7.4.0)(@pixi/core@7.4.0)(@pixi/display@7.4.0)(@pixi/extensions@7.4.0)(@pixi/graphics@7.4.0)(@pixi/math@7.4.0)(@pixi/mesh-extras@7.4.0)(@pixi/mesh@7.4.0)(@pixi/particle-container@7.4.0)(@pixi/sprite-animated@7.4.0)(@pixi/sprite-tiling@7.4.0)(@pixi/sprite@7.4.0)(@pixi/text-bitmap@7.4.0)(@pixi/text@7.4.0)(@pixi/ticker@7.4.0)(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
-  phaser:
-    specifier: ^3.70.0
-    version: 3.70.0
   pixi.js:
     specifier: ^7.4.0
     version: 7.4.0
@@ -1275,10 +1272,6 @@ packages:
     resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
     dev: false
 
-  /eventemitter3@5.0.1:
-    resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
-    dev: false
-
   /fill-range@7.0.1:
     resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==}
     engines: {node: '>=8'}
@@ -1457,12 +1450,6 @@ packages:
 
   /performance-now@2.1.0:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
-    dev: false
-
-  /phaser@3.70.0:
-    resolution: {integrity: sha512-2g+gh+Jp9f/Ho9FOXOYbIJMGf3UZXyMbW2iLScFaLQw11e/LqVyxj/YmaBauWbHabeTnZjiWkPklDnxhesMH0g==}
-    dependencies:
-      eventemitter3: 5.0.1
     dev: false
 
   /picocolors@1.0.0:

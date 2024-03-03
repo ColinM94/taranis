@@ -5,7 +5,7 @@ import * as Pixi from "pixi.js";
 
 import { Props } from "./types";
 
-export const Tile = ({ x, y, height, width, coordinates }: Props) => {
+export const Tile = ({ x, y, height, width, coordinates, center }: Props) => {
   return (
     <Container
       x={x}
@@ -28,7 +28,7 @@ export const Tile = ({ x, y, height, width, coordinates }: Props) => {
       />
 
       <Text
-        text={`${coordinates.x}, ${coordinates.y}, X:${x}, Y:${y}`}
+        text={`${coordinates.x}, ${coordinates.y}, X:${x}, Y:${y}, center: ${center.x}, ${center.y}`}
         style={{
           fill: "white",
           fontSize: 12,
