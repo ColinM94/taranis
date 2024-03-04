@@ -20,6 +20,7 @@ export const Game = ({ children, className }: Props) => {
         antialias: false,
         resizeTo: window,
       }}
+      
       className={classes(styles.container, className)}
     >
       {children}

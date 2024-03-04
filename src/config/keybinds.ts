@@ -17,7 +17,11 @@ export type KeybindKey =
   | "uiSelect"
   | "uiBack"
   | "zoomIn"
-  | "zoomOut";
+  | "zoomOut"
+  | "cameraLeft"
+  | "cameraRight"
+  | "cameraDown"
+  | "cameraUp";
 
 export const keyNames: Record<Bind, string> = {
   "keyboard:ArrowLeft": "←",
@@ -98,19 +102,19 @@ export const keyNames: Record<Bind, string> = {
 
 export const keybinds: Record<KeybindKey, Keybind> = {
   moveLeft: {
-    binds: ["keyboard:ArrowLeft", "keyboard:KeyA", "controller:14"],
+    binds: ["keyboard:KeyA", "controller:14"],
     label: "Move Left",
   },
   moveRight: {
-    binds: ["keyboard:ArrowRight", "keyboard:KeyD", "controller:15"],
+    binds: ["keyboard:KeyD", "controller:15"],
     label: "Move Right",
   },
   moveDown: {
-    binds: ["keyboard:ArrowDown", "keyboard:KeyS", "controller:13"],
+    binds: ["keyboard:KeyS", "controller:13"],
     label: "Move Down",
   },
   moveUp: {
-    binds: ["keyboard:ArrowUp", "keyboard:KeyW", "controller:12"],
+    binds: ["keyboard:KeyW", "controller:12"],
     label: "Move Up",
   },
   jump: {
@@ -164,5 +168,21 @@ export const keybinds: Record<KeybindKey, Keybind> = {
   zoomOut: {
     binds: ["keyboard:Minus", "mouse:WheelDown"],
     label: "Zoom Out",
+  },
+  cameraLeft: {
+    binds: ["keyboard:ArrowLeft", "controller:14"],
+    label: "Camera Left",
+  },
+  cameraRight: {
+    binds: ["keyboard:ArrowRight", "controller:15"],
+    label: "Camera Right",
+  },
+  cameraDown: {
+    binds: ["keyboard:ArrowDown", "controller:13"],
+    label: "Camera Down",
+  },
+  cameraUp: {
+    binds: ["keyboard:ArrowUp", "controller:12"],
+    label: "Camera Up",
   },
 };

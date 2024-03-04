@@ -41,6 +41,10 @@ export const Torch = ({ x, y }: Props) => {
       isPlaying={true}
       loop={true}
       animationSpeed={0.15}
+      anchor={{
+        x: 0.5,
+        y: 1,
+      }}
     />
   );
 };

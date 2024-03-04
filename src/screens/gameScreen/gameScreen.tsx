@@ -22,7 +22,21 @@ export const GameScreen = ({}: GameScreenProps) => {
     flipx: false,
     width: window.innerWidth,
     height: window.innerHeight,
+    scale: 1,
   });
+
+  const [camera, updateCamera] = reactReducer({
+    x: 0,
+    y: 0,
+    zoom: 1,
+  });
+
+  const [playerGridPosition, setPlayerGridPosition] = React.useState({
+    x: 0,
+    y: 0,
+  });
+
+  const playerGridPositionRef = React.useRef(playerGridPosition);
 
   React.useEffect(() => {
     const unsubscribe = input.createCallback("pause", () => {
@@ -34,51 +48,60 @@ export const GameScreen = ({}: GameScreenProps) => {
     };
   }, []);
 
-  useTick(() => {
+  useTick((delta) => {
     const input = useInput.getState();
 
     let xChange = 0;
     let yChange = 0;
     let flipped = state.flipx;
-    const speed = 5;
+    const speed = 10 * (1 / camera.zoom);
 
-    if (input.moveLeft.isPressed) {
+    if (input.cameraLeft.isPressed) {
       xChange += speed;
       flipped = true;
-    } else if (input.moveRight.isPressed) {
+    } else if (input.cameraRight.isPressed) {
       xChange -= speed;
       flipped = false;
     }
 
-    if (input.moveUp.isPressed) {
-      yChange += speed;
-    } else if (input.moveDown.isPressed) {
-      yChange -= speed;
+    if (input.cameraUp.isPressed) {
+      yChange += speed / 2;
+    } else if (input.cameraDown.isPressed) {
+      yChange -= speed / 2;
     }
 
     if (xChange || yChange) {
-      updateState({
-        x: state.x + xChange,
-        y: state.y + yChange / 2,
-        flipx: flipped,
+      updateCamera({
+        x: camera.x + xChange,
+        y: camera.y + yChange,
       });
     }
 
-    const zoomFactor = 0.1;
+    const scaleFactor = 0.1;
+    const maxZoomIn = 5;
+    const maxZoomOut = 0.000001;
 
     if (input.zoomIn.isPressed) {
-      updateState({
-        width: state.width - state.width * zoomFactor,
-        height: state.height - state.width * zoomFactor,
-      });
+      let newValue = camera.zoom + scaleFactor * camera.zoom;
+
+      if (newValue >= maxZoomIn) {
+        newValue = maxZoomIn;
+      }
+
+      camera.zoom = newValue;
     }
 
     if (input.zoomOut.isPressed) {
-      updateState({
-        width: state.width + state.width * zoomFactor,
-        height: state.height + state.width * zoomFactor,
-      });
+      let newValue = camera.zoom - scaleFactor * camera.zoom;
+
+      if (newValue <= maxZoomOut) {
+        newValue = maxZoomOut;
+      }
+
+      camera.zoom = newValue;
     }
+
+    updateContainerPosition();
   });
 
   const grid = React.useMemo(() => {
@@ -90,8 +113,8 @@ export const GameScreen = ({}: GameScreenProps) => {
       center: { x: number; y: number };
     }[][] = [];
 
-    const numRows = 50;
-    const numCols = 50;
+    const numRows = 10;
+    const numCols = 10;
 
     const tileHeight = 268;
     const tileWidth = 536;
@@ -104,14 +127,17 @@ export const GameScreen = ({}: GameScreenProps) => {
       for (let col = 0; col < numCols; col++) {
         const colValue = col / 2;
 
+        const x = tileWidth * rowValue + tileWidth * colValue;
+        const y = tileHeight * colValue - tileHeight * rowValue;
+
         grid[row][col] = {
-          x: tileWidth * rowValue + tileWidth * colValue,
-          y: tileHeight * colValue - tileHeight * rowValue,
+          x,
+          y,
           width: tileWidth,
           height: tileHeight,
           center: {
-            x: tileWidth * rowValue + tileWidth * colValue + tileWidth / 2,
-            y: tileHeight * colValue - tileHeight * rowValue + tileHeight / 2,
+            x: x,
+            y: y - tileHeight / 3,
           },
         };
       }
@@ -123,10 +149,12 @@ export const GameScreen = ({}: GameScreenProps) => {
   const renderGrid = React.useMemo(() => {
     if (!grid) return null;
 
+    console.log("grid");
+
     const tiles = [];
 
-    for (let row = 0; row < grid[0].length; row++) {
-      for (let col = 0; col < grid.length; col++) {
+    for (let row = grid[0].length - 1; row >= 0; row--) {
+      for (let col = grid.length - 1; col >= 0; col--) {
         const { x, y, width, height, center } = grid[row][col];
 
         tiles.push(
@@ -138,6 +166,15 @@ export const GameScreen = ({}: GameScreenProps) => {
             width={width}
             coordinates={{ x, y }}
             center={center}
+            xIndex={row}
+            yIndex={col}
+            visible={true}
+            onClick={(info) => {
+              setPlayerGridPosition({
+                x: info.xIndex,
+                y: info.yIndex,
+              });
+            }}
           />
         );
       }
@@ -171,15 +208,50 @@ export const GameScreen = ({}: GameScreenProps) => {
   //   };
   // }, [state.width, state.height]);
 
+  const updateContainerPosition = () => {
+    updateState({
+      x: camera.x * camera.zoom + window.innerWidth / 2,
+      y: camera.y * camera.zoom + window.innerHeight / 2,
+      scale: camera.zoom,
+    });
+  };
+
+  const movePlayer = (direction: "up" | "down" | "left" | "right") => {
+    let updatedX = playerGridPositionRef.current.x;
+    let updatedY = playerGridPositionRef.current.y;
+
+    if (direction === "up") {
+      updatedX = updatedX + 1;
+    } else if (direction === "down") {
+      updatedX = updatedX - 1;
+    } else if (direction === "left") {
+      updatedY = updatedY - 1;
+    } else if (direction === "right") {
+      updatedY = updatedY + 1;
+    }
+
+    if (updatedX !== undefined && grid[updatedX][updatedY] !== undefined) {
+      setPlayerGridPosition({
+        x: updatedX,
+        y: updatedY,
+      });
+
+      playerGridPositionRef.current = {
+        x: updatedX,
+        y: updatedY,
+      };
+    }
+  };
+
   return (
     <Container
       x={state.x}
       y={state.y}
-      height={state.height}
-      width={state.width}
-      anchor={{
-        x: 0.5,
-        y: 0.5,
+      // width={state.width}
+      // height={state.height}
+      scale={{
+        y: state.scale,
+        x: state.scale,
       }}
     >
       {renderGrid}
@@ -193,8 +265,15 @@ export const GameScreen = ({}: GameScreenProps) => {
       </Container>
 
       <Player
-        x={5000}
-        y={250}
+        position={{
+          x: grid[playerGridPosition.x][playerGridPosition.y].center.x,
+          y: grid[playerGridPosition.x][playerGridPosition.y].center.y,
+        }}
+        onMoveUp={() => movePlayer("up")}
+        onMoveDown={() => movePlayer("down")}
+        onMoveLeft={() => movePlayer("left")}
+        onMoveRight={() => movePlayer("right")}
+
         // updatePosition={(x, y, width, height) => {
         //   const newX = x * -1 + state.width / 2;
         //   const newY = y * -1 + state.height / 2;

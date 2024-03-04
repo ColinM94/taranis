@@ -8,21 +8,27 @@ import player from "assets/sprites/player.png";
 import sword from "assets/sprites/sword.png";
 
 interface Props {
-  x: number;
-  y: number;
+  position: {
+    x: number;
+    y: number;
+  };
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+  onMoveLeft: () => void;
+  onMoveRight: () => void;
   updatePosition: (x: number, y: number, width: number, height: number) => void;
 }
 
 export const Player = (props: Props) => {
   const input = useInput();
 
+  const { position, onMoveUp, onMoveDown, onMoveLeft, onMoveRight } = props;
+
   const [texture, setTexture] = React.useState<Pixi.Texture>();
   const [textures, setTextures] = React.useState<Pixi.Texture[]>([]);
   const [direction, setDirection] = React.useState<"down" | "up">();
 
   const [state, updateState] = reactReducer({
-    x: props.x,
-    y: props.y,
     flipx: false,
     height: 0,
     width: 0,
@@ -65,58 +71,46 @@ export const Player = (props: Props) => {
     setTexture(texture1);
   }, []);
 
-  useTick(() => {
-    if (textures.length === 0) return;
-
-    const input = useInput.getState();
-
-    let xChange = 0;
-    let yChange = 0;
-    let flipped = state.flipx;
-    const speed = 5;
-
-    if (input.moveDown.isPressed && input.moveLeft.isPressed) {
-      setTexture(textures[0]);
-      flipped = false;
-      setDirection("down");
-    } else if (input.moveDown.isPressed && input.moveRight.isPressed) {
-      setTexture(textures[0]);
-      flipped = true;
-      setDirection("down");
-    } else if (input.moveUp.isPressed && input.moveRight.isPressed) {
+  React.useEffect(() => {
+    const unsubscribe = input.createCallback("moveUp", () => {
+      onMoveUp();
+      updateState({
+        flipx: false,
+      });
       setTexture(textures[2]);
-      flipped = false;
-      setDirection("up");
-    } else if (input.moveUp.isPressed && input.moveLeft.isPressed) {
+    });
+
+    const unsubscribe2 = input.createCallback("moveDown", () => {
+      onMoveDown();
+      updateState({
+        flipx: false,
+      });
+      setTexture(textures[0]);
+    });
+
+    const unsubscribe3 = input.createCallback("moveLeft", () => {
+      onMoveLeft();
+      updateState({
+        flipx: true,
+      });
       setTexture(textures[2]);
-      flipped = true;
-      setDirection("up");
-    }
+    });
 
-    // if (input.moveLeft.isPressed) {
-    //   xChange -= speed;
-    // } else if (input.moveRight.isPressed) {
-    //   xChange += speed;
-    // }
+    const unsubscribe4 = input.createCallback("moveRight", () => {
+      onMoveRight();
+      updateState({
+        flipx: true,
+      });
+      setTexture(textures[0]);
+    });
 
-    // if (input.moveUp.isPressed) {
-    //   yChange -= speed;
-    // } else if (input.moveDown.isPressed) {
-    //   yChange += speed;
-    // }
-
-    // if (xChange || yChange) {
-    //   updateState({
-    //     x: state.x + xChange,
-    //     y: state.y + yChange / 2,
-    //     flipx: flipped,
-    //   });
-    // }
-  });
-
-  // React.useEffect(() => {
-  //   props.updatePosition(state.x, state.y, state.width, state.height);
-  // }, [state.x, state.y]);
+    return () => {
+      unsubscribe();
+      unsubscribe2();
+      unsubscribe3();
+      unsubscribe4();
+    };
+  }, []);
 
   React.useEffect(() => {
     if (input.attack.isPressed) {
@@ -134,11 +128,15 @@ export const Player = (props: Props) => {
 
   return (
     <Container
-      x={state.x}
-      y={state.y}
+      x={position.x}
+      y={position.y}
       scale={{
         x: state.flipx ? -0.5 : 0.5,
         y: 0.5,
+      }}
+      anchor={{
+        x: 0,
+        y: 0,
       }}
     >
       <Sprite
