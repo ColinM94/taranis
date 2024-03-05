@@ -8,6 +8,7 @@ import { Torch } from "entities/torch/torch";
 import chest from "assets/sprites/chest.png";
 import { Tile } from "entities/tile/tile";
 import * as PIXI from "pixi.js";
+import house from "assets/sprites/house.png";
 
 import { GameScreenProps } from "./types";
 
@@ -31,9 +32,12 @@ export const GameScreen = ({}: GameScreenProps) => {
     zoom: 1,
   });
 
+  const numRows = 10;
+  const numCols = 10;
+
   const [playerGridPosition, setPlayerGridPosition] = React.useState({
-    x: 0,
-    y: 0,
+    x: numRows / 2 - 1,
+    y: numCols / 2 - 1,
   });
 
   const playerGridPositionRef = React.useRef(playerGridPosition);
@@ -113,11 +117,8 @@ export const GameScreen = ({}: GameScreenProps) => {
       center: { x: number; y: number };
     }[][] = [];
 
-    const numRows = 10;
-    const numCols = 10;
-
-    const tileHeight = 268;
-    const tileWidth = 536;
+    const tileHeight = 256;
+    const tileWidth = 512;
 
     for (let row = 0; row < numRows; row++) {
       const rowValue = row / 2;
@@ -258,11 +259,86 @@ export const GameScreen = ({}: GameScreenProps) => {
       {/* <Torch x={50} y={50} />
       <Torch x={200} y={50} />
       <Torch x={600} y={50} /> */}
-      <Container x={2000} y={50}>
+      {/* <Container x={2000} y={50}>
         <Torch x={-60} y={-90} />
         <StaticObject x={0} y={0} texture={PIXI.Texture.from(chest)} />
         <Torch x={200} y={50} />
-      </Container>
+      </Container> */}
+
+      <Torch x={grid[0][1].center.x} y={grid[0][1].center.y} />
+
+      <StaticObject
+        texture={PIXI.Texture.from(house)}
+        x={grid[5][1].center.x}
+        y={grid[5][1].center.y}
+        anchor={[0.5, 0.65]}
+        scale={5}
+      />
+
+      <Torch x={grid[4][1].center.x} y={grid[4][1].center.y} />
+      <StaticObject
+        texture={PIXI.Texture.from(house)}
+        x={grid[3][1].center.x}
+        y={grid[3][1].center.y}
+        anchor={[0.5, 0.65]}
+        scale={5}
+      />
+
+      <Torch x={grid[2][1].center.x} y={grid[2][1].center.y} />
+
+      <StaticObject
+        texture={PIXI.Texture.from(house)}
+        x={grid[1][1].center.x}
+        y={grid[1][1].center.y}
+        anchor={[0.5, 0.65]}
+        scale={5}
+      />
+
+      <StaticObject
+        texture={PIXI.Texture.from(house)}
+        x={grid[8][2].center.x}
+        y={grid[8][2].center.y}
+        anchor={[0.5, 0.65]}
+        scale={{
+          x: -5,
+          y: 5,
+        }}
+      />
+
+      <Torch x={grid[8][3].center.x} y={grid[8][3].center.y} />
+
+      <StaticObject
+        texture={PIXI.Texture.from(house)}
+        x={grid[8][4].center.x}
+        y={grid[8][4].center.y}
+        anchor={[0.5, 0.65]}
+        scale={{
+          x: -5,
+          y: 5,
+        }}
+      />
+
+      <Torch x={grid[8][5].center.x} y={grid[8][5].center.y} />
+
+      <Torch x={grid[4][1].center.x} y={grid[4][1].center.y} />
+      <StaticObject
+        texture={PIXI.Texture.from(house)}
+        x={grid[3][1].center.x}
+        y={grid[3][1].center.y}
+        anchor={[0.5, 0.65]}
+        scale={5}
+      />
+
+      <StaticObject
+        texture={PIXI.Texture.from(house)}
+        x={grid[8][6].center.x}
+        y={grid[8][6].center.y}
+        anchor={[0.5, 0.65]}
+        scale={{
+          x: -5,
+          y: 5,
+        }}
+      />
 
       <Player
         position={{

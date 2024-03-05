@@ -43,7 +43,7 @@ export const Torch = ({ x, y }: Props) => {
       animationSpeed={0.15}
       anchor={{
         x: 0.5,
-        y: 1,
+        y: 0.5,
       }}
     />
   );

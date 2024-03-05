@@ -19,19 +19,26 @@ interface Props {
   updatePosition: (x: number, y: number, width: number, height: number) => void;
 }
 
+interface PlayerState {
+  flipx: boolean;
+  height: number;
+  width: number;
+  texture: Pixi.Texture | undefined;
+}
+
 export const Player = (props: Props) => {
   const input = useInput();
 
   const { position, onMoveUp, onMoveDown, onMoveLeft, onMoveRight } = props;
 
-  const [texture, setTexture] = React.useState<Pixi.Texture>();
   const [textures, setTextures] = React.useState<Pixi.Texture[]>([]);
   const [direction, setDirection] = React.useState<"down" | "up">();
 
-  const [state, updateState] = reactReducer({
+  const [state, updateState] = reactReducer<PlayerState>({
     flipx: false,
     height: 0,
     width: 0,
+    texture: undefined,
   });
 
   const [weapon, setWeapon] = reactReducer({
@@ -68,7 +75,7 @@ export const Player = (props: Props) => {
     );
 
     setTextures([texture1, texture2, texture3, texture4]);
-    setTexture(texture1);
+    updateState({ texture: texture1 });
   }, []);
 
   React.useEffect(() => {
@@ -76,32 +83,32 @@ export const Player = (props: Props) => {
       onMoveUp();
       updateState({
         flipx: false,
+        texture: textures[2],
       });
-      setTexture(textures[2]);
     });
 
     const unsubscribe2 = input.createCallback("moveDown", () => {
       onMoveDown();
       updateState({
         flipx: false,
+        texture: textures[0],
       });
-      setTexture(textures[0]);
     });
 
     const unsubscribe3 = input.createCallback("moveLeft", () => {
       onMoveLeft();
       updateState({
         flipx: true,
+        texture: textures[2],
       });
-      setTexture(textures[2]);
     });
 
     const unsubscribe4 = input.createCallback("moveRight", () => {
       onMoveRight();
       updateState({
         flipx: true,
+        texture: textures[0],
       });
-      setTexture(textures[0]);
     });
 
     return () => {
@@ -110,7 +117,7 @@ export const Player = (props: Props) => {
       unsubscribe3();
       unsubscribe4();
     };
-  }, []);
+  }, [textures]);
 
   React.useEffect(() => {
     if (input.attack.isPressed) {
@@ -124,7 +131,7 @@ export const Player = (props: Props) => {
     }
   }, [input.attack.isPressed]);
 
-  if (!texture) return null;
+  if (!state.texture) return null;
 
   return (
     <Container
@@ -142,7 +149,7 @@ export const Player = (props: Props) => {
       <Sprite
         x={0}
         y={0}
-        texture={texture}
+        texture={state.texture}
         anchor={{
           x: 0.5,
           y: 0.5,
