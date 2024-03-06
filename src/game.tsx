@@ -19,8 +19,8 @@ export const Game = ({ children, className }: Props) => {
         backgroundColor: 0x000000,
         antialias: false,
         resizeTo: window,
+        resolution: window.devicePixelRatio,
       }}
-      
       className={classes(styles.container, className)}
     >
       {children}

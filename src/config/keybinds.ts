@@ -170,19 +170,19 @@ export const keybinds: Record<KeybindKey, Keybind> = {
     label: "Zoom Out",
   },
   cameraLeft: {
-    binds: ["keyboard:ArrowLeft", "controller:14"],
+    binds: ["keyboard:ArrowLeft"],
     label: "Camera Left",
   },
   cameraRight: {
-    binds: ["keyboard:ArrowRight", "controller:15"],
+    binds: ["keyboard:ArrowRight"],
     label: "Camera Right",
   },
   cameraDown: {
-    binds: ["keyboard:ArrowDown", "controller:13"],
+    binds: ["keyboard:ArrowDown"],
     label: "Camera Down",
   },
   cameraUp: {
-    binds: ["keyboard:ArrowUp", "controller:12"],
+    binds: ["keyboard:ArrowUp"],
     label: "Camera Up",
   },
 };

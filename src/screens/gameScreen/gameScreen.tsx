@@ -9,6 +9,7 @@ import chest from "assets/sprites/chest.png";
 import { Tile } from "entities/tile/tile";
 import * as PIXI from "pixi.js";
 import house from "assets/sprites/house.png";
+import mountain from "assets/sprites/mountain.png";
 
 import { GameScreenProps } from "./types";
 
@@ -29,7 +30,7 @@ export const GameScreen = ({}: GameScreenProps) => {
   const [camera, updateCamera] = reactReducer({
     x: 0,
     y: 0,
-    zoom: 1,
+    zoom: 5,
   });
 
   const numRows = 10;
@@ -117,7 +118,7 @@ export const GameScreen = ({}: GameScreenProps) => {
       center: { x: number; y: number };
     }[][] = [];
 
-    const tileHeight = 256;
+    const tileHeight = 257;
     const tileWidth = 512;
 
     for (let row = 0; row < numRows; row++) {
@@ -128,8 +129,8 @@ export const GameScreen = ({}: GameScreenProps) => {
       for (let col = 0; col < numCols; col++) {
         const colValue = col / 2;
 
-        const x = tileWidth * rowValue + tileWidth * colValue;
-        const y = tileHeight * colValue - tileHeight * rowValue;
+        const x = tileWidth * rowValue + tileWidth * colValue - row * 4;
+        const y = tileHeight * colValue - tileHeight * rowValue + row * 3;
 
         grid[row][col] = {
           x,
@@ -149,8 +150,6 @@ export const GameScreen = ({}: GameScreenProps) => {
 
   const renderGrid = React.useMemo(() => {
     if (!grid) return null;
-
-    console.log("grid");
 
     const tiles = [];
 
@@ -265,17 +264,201 @@ export const GameScreen = ({}: GameScreenProps) => {
         <Torch x={200} y={50} />
       </Container> */}
 
-      <Torch x={grid[0][1].center.x} y={grid[0][1].center.y} />
+      {/* <Torch x={grid[0][1].center.x} y={grid[0][1].center.y} /> */}
 
       <StaticObject
-        texture={PIXI.Texture.from(house)}
-        x={grid[5][1].center.x}
-        y={grid[5][1].center.y}
-        anchor={[0.5, 0.65]}
-        scale={5}
+        sprite={house}
+        x={grid[0][0].center.x}
+        y={grid[0][0].center.y}
+        anchor={[0.5, 0.5]}
       />
 
-      <Torch x={grid[4][1].center.x} y={grid[4][1].center.y} />
+      <StaticObject
+        sprite={house}
+        x={grid[1][0].center.x}
+        y={grid[1][0].center.y}
+        anchor={[0.5, 0.5]}
+      />
+
+      <StaticObject
+        sprite={house}
+        x={grid[0][1].center.x}
+        y={grid[0][1].center.y}
+        anchor={[0.5, 0.5]}
+      />
+
+      <StaticObject
+        sprite={house}
+        x={grid[1][1].center.x}
+        y={grid[1][1].center.y}
+        anchor={[0.5, 0.5]}
+      />
+
+      <StaticObject
+        sprite={house}
+        x={grid[0][2].center.x}
+        y={grid[0][2].center.y}
+        anchor={[0.5, 0.5]}
+      />
+
+      <StaticObject
+        sprite={house}
+        x={grid[1][2].center.x}
+        y={grid[1][2].center.y}
+        anchor={[0.5, 0.5]}
+      />
+
+      <StaticObject
+        sprite={mountain}
+        x={grid[8][1].center.x}
+        y={grid[8][1].center.y}
+        anchor={[0.5, 0.5]}
+        scale={2}
+      />
+
+      <StaticObject
+        sprite={mountain}
+        x={grid[4][1].center.x}
+        y={grid[4][1].center.y}
+        anchor={[0.5, 0.5]}
+        scale={2}
+      />
+
+      <StaticObject
+        sprite={mountain}
+        x={grid[6][1].center.x}
+        y={grid[6][1].center.y}
+        anchor={[0.5, 0.5]}
+        scale={2}
+      />
+
+      <StaticObject
+        sprite={mountain}
+        x={grid[8][1].center.x}
+        y={grid[8][1].center.y}
+        anchor={[0.5, 0.5]}
+        scale={2}
+      />
+
+      <StaticObject
+        sprite={house}
+        x={grid[8][2].center.x}
+        y={grid[8][2].center.y}
+        anchor={[0.5, 0.5]}
+        scale={0.2}
+      />
+
+      <Container x={grid[5][3].center.x} y={grid[5][3].center.y}>
+        <StaticObject
+          sprite={house}
+          x={0}
+          y={0}
+          anchor={[0.5, 0.5]}
+          scale={0.2}
+        />
+        <StaticObject
+          sprite={house}
+          x={50}
+          y={50}
+          anchor={[0.5, 0.5]}
+          scale={0.2}
+        />
+        <StaticObject
+          sprite={house}
+          x={50}
+          y={50}
+          anchor={[0.5, 0.5]}
+          scale={[0.2]}
+        />
+        <StaticObject
+          sprite={house}
+          x={125}
+          y={50}
+          anchor={[0.5, 0.5]}
+          scale={[0.2]}
+        />
+        <StaticObject
+          sprite={house}
+          x={125}
+          y={100}
+          anchor={[0.5, 0.5]}
+          scale={[0.2]}
+        />
+
+        <StaticObject
+          sprite={house}
+          x={50}
+          y={100}
+          anchor={[0.5, 0.5]}
+          scale={[0.2]}
+        />
+
+        <StaticObject
+          sprite={house}
+          x={0}
+          y={75}
+          anchor={[0.5, 0.5]}
+          scale={[0.2]}
+        />
+      </Container>
+
+      <Container x={grid[4][2].center.x} y={grid[4][2].center.y}>
+        <StaticObject
+          sprite={house}
+          x={0}
+          y={0}
+          anchor={[0.5, 0.5]}
+          scale={0.2}
+        />
+        <StaticObject
+          sprite={house}
+          x={50}
+          y={50}
+          anchor={[0.5, 0.5]}
+          scale={0.2}
+        />
+        <StaticObject
+          sprite={house}
+          x={50}
+          y={50}
+          anchor={[0.5, 0.5]}
+          scale={[0.2]}
+        />
+        <StaticObject
+          sprite={house}
+          x={125}
+          y={50}
+          anchor={[0.5, 0.5]}
+          scale={[0.2]}
+        />
+        <StaticObject
+          sprite={house}
+          x={125}
+          y={100}
+          anchor={[0.5, 0.5]}
+          scale={[0.2]}
+        />
+
+        <StaticObject
+          sprite={house}
+          x={50}
+          y={100}
+          anchor={[0.5, 0.5]}
+          scale={[0.2]}
+        />
+      </Container>
+
+      <StaticObject sprite={house} anchor={[0.5, 0.5]} scale={0.2} />
+
+      <StaticObject
+        sprite={house}
+        x={grid[7][3].center.x}
+        y={grid[7][3].center.y}
+        anchor={[0.5, 0.5]}
+        scale={0.2}
+      />
+
+      {/* <Torch x={grid[4][1].center.x} y={grid[4][1].center.y} />
       <StaticObject
         texture={PIXI.Texture.from(house)}
         x={grid[3][1].center.x}
@@ -338,7 +521,7 @@ export const GameScreen = ({}: GameScreenProps) => {
           x: -5,
           y: 5,
         }}
-      />
+      /> */}
 
       <Player
         position={{

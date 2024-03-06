@@ -1,6 +1,6 @@
 import { Container, Sprite, Text } from "@pixi/react";
 
-import ground from "assets/sprites/groundTile.png";
+import ground from "assets/sprites/ground.png";
 import * as Pixi from "pixi.js";
 
 import { Props } from "./types";
@@ -13,8 +13,6 @@ export const Tile = (props: Props) => {
     <Container
       x={x}
       y={y}
-      height={height}
-      width={width}
       anchor={{
         x: 0,
         y: 0,
@@ -26,9 +24,9 @@ export const Tile = (props: Props) => {
       }}
     >
       <Sprite
-        texture={Pixi.Texture.from(ground)}
-        height={height}
-        width={width}
+        texture={Pixi.Texture.from(ground, {
+          scaleMode: Pixi.SCALE_MODES.NEAREST,
+        })}
         anchor={{
           x: 0.5,
           y: 0.5,

@@ -138,8 +138,8 @@ export const Player = (props: Props) => {
       x={position.x}
       y={position.y}
       scale={{
-        x: state.flipx ? -0.5 : 0.5,
-        y: 0.5,
+        x: state.flipx ? -0.1 : 0.1,
+        y: 0.1,
       }}
       anchor={{
         x: 0,
