@@ -10,6 +10,8 @@ import { Tile } from "entities/tile/tile";
 import * as PIXI from "pixi.js";
 import house from "assets/sprites/house.png";
 import mountain from "assets/sprites/mountain.png";
+import forest from "assets/sprites/forest.png";
+import forest2 from "assets/sprites/forest2.png";
 
 import { GameScreenProps } from "./types";
 
@@ -317,13 +319,66 @@ export const GameScreen = ({}: GameScreenProps) => {
       />
 
       <StaticObject
+        sprite={forest}
+        x={grid[3][1].center.x}
+        y={grid[3][1].center.y}
+        anchor={[0.5, 0.5]}
+        scale={2}
+      />
+
+      <StaticObject
+        sprite={forest2}
+        x={grid[5][3].center.x}
+        y={grid[5][3].center.y}
+        anchor={[0.5, 0.5]}
+        scale={0.5}
+      />
+      <StaticObject
+        sprite={forest2}
+        x={grid[6][3].center.x}
+        y={grid[6][3].center.y}
+        anchor={[0.5, 0.5]}
+        scale={0.5}
+      />
+      <StaticObject
+        sprite={forest2}
+        x={grid[7][3].center.x}
+        y={grid[7][3].center.y}
+        anchor={[0.5, 0.5]}
+        scale={0.5}
+      />
+
+      <StaticObject
+        sprite={forest2}
+        x={grid[4][6].center.x}
+        y={grid[4][6].center.y}
+        anchor={[0.5, 0.5]}
+        scale={0.5}
+      />
+
+      <StaticObject
+        sprite={forest2}
+        x={grid[5][6].center.x}
+        y={grid[5][5].center.y}
+        anchor={[0.5, 0.5]}
+        scale={0.5}
+      />
+
+      <StaticObject
+        sprite={forest2}
+        x={grid[6][4].center.x}
+        y={grid[6][4].center.y}
+        anchor={[0.5, 0.5]}
+        scale={0.5}
+      />
+
+      <StaticObject
         sprite={mountain}
         x={grid[4][1].center.x}
         y={grid[4][1].center.y}
         anchor={[0.5, 0.5]}
         scale={2}
       />
-
       <StaticObject
         sprite={mountain}
         x={grid[6][1].center.x}
@@ -342,13 +397,29 @@ export const GameScreen = ({}: GameScreenProps) => {
 
       <StaticObject
         sprite={house}
+        x={grid[6][2].center.x}
+        y={grid[6][2].center.y}
+        anchor={[0.5, 0.5]}
+        scale={0.2}
+      />
+
+      <StaticObject
+        sprite={house}
         x={grid[8][2].center.x}
         y={grid[8][2].center.y}
         anchor={[0.5, 0.5]}
         scale={0.2}
       />
 
-      <Container x={grid[5][3].center.x} y={grid[5][3].center.y}>
+      <StaticObject
+        sprite={house}
+        x={grid[8][3].center.x}
+        y={grid[8][3].center.y}
+        anchor={[0.5, 0.5]}
+        scale={0.2}
+      />
+
+      <Container x={grid[5][4].center.x} y={grid[5][4].center.y}>
         <StaticObject
           sprite={house}
           x={0}
@@ -452,8 +523,8 @@ export const GameScreen = ({}: GameScreenProps) => {
 
       <StaticObject
         sprite={house}
-        x={grid[7][3].center.x}
-        y={grid[7][3].center.y}
+        x={grid[7][4].center.x}
+        y={grid[7][4].center.y}
         anchor={[0.5, 0.5]}
         scale={0.2}
       />
