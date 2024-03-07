@@ -117,6 +117,22 @@ export const keybinds: Record<KeybindKey, Keybind> = {
     binds: ["keyboard:KeyW", "controller:12"],
     label: "Move Up",
   },
+  // moveLeft: {
+  //   binds: ["controller:14"],
+  //   label: "Move Left",
+  // },
+  // moveRight: {
+  //   binds: ["controller:15"],
+  //   label: "Move Right",
+  // },
+  // moveDown: {
+  //   binds: ["controller:13"],
+  //   label: "Move Down",
+  // },
+  // moveUp: {
+  //   binds: ["controller:12"],
+  //   label: "Move Up",
+  // },
   jump: {
     binds: ["keyboard:Space", "controller:0"],
     label: "Jump",
@@ -185,4 +201,20 @@ export const keybinds: Record<KeybindKey, Keybind> = {
     binds: ["keyboard:ArrowUp"],
     label: "Camera Up",
   },
+  // cameraLeft: {
+  //   binds: ["keyboard:KeyA", "keyboard:ArrowLeft"],
+  //   label: "Camera Left",
+  // },
+  // cameraRight: {
+  //   binds: ["keyboard:KeyD", "keyboard:ArrowRight"],
+  //   label: "Camera Right",
+  // },
+  // cameraDown: {
+  //   binds: ["keyboard:KeyS", "keyboard:ArrowDown"],
+  //   label: "Camera Down",
+  // },
+  // cameraUp: {
+  //   binds: ["keyboard:KeyW", "keyboard:ArrowUp"],
+  //   label: "Camera Up",
+  // },
 };

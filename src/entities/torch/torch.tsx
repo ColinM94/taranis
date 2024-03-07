@@ -5,7 +5,7 @@ import torch from "assets/sprites/torch.png";
 
 import { Props } from "./types";
 
-export const Torch = ({ x, y }: Props) => {
+export const Torch = ({ x, y, height, width }: Props) => {
   const [textures, setTextures] = React.useState<PIXI.Texture[]>([]);
 
   React.useEffect(() => {
@@ -13,7 +13,7 @@ export const Torch = ({ x, y }: Props) => {
     const height = 219;
 
     const texture: PIXI.BaseTexture<PIXI.Resource, PIXI.IAutoDetectOptions> =
-      PIXI.BaseTexture.from(torch);
+      PIXI.BaseTexture.from(torch, {});
 
     const texture1 = new PIXI.Texture(
       texture,
@@ -37,6 +37,8 @@ export const Torch = ({ x, y }: Props) => {
     <AnimatedSprite
       x={x}
       y={y}
+      height={height}
+      width={width}
       textures={textures}
       isPlaying={true}
       loop={true}

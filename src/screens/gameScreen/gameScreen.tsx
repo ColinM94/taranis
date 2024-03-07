@@ -1,17 +1,11 @@
 import * as React from "react";
-import { Container, useApp, useTick } from "@pixi/react";
+import { useApp, useTick } from "@pixi/react";
 
-import { Player, StaticObject } from "entities";
+import { Player } from "entities";
 import { useInput } from "store";
 import { navigate, reactReducer } from "utils";
-import { Torch } from "entities/torch/torch";
-import chest from "assets/sprites/chest.png";
 import { Tile } from "entities/tile/tile";
-import * as PIXI from "pixi.js";
-import house from "assets/sprites/house.png";
-import mountain from "assets/sprites/mountain.png";
-import forest from "assets/sprites/forest.png";
-import forest2 from "assets/sprites/forest2.png";
+import { Camera } from "components";
 
 import { GameScreenProps } from "./types";
 
@@ -21,29 +15,21 @@ export const GameScreen = ({}: GameScreenProps) => {
   const app = useApp();
 
   const [state, updateState] = reactReducer({
-    x: 0,
-    y: 0,
+    x: 1500,
+    y: 64,
     flipx: false,
     width: window.innerWidth,
     height: window.innerHeight,
     scale: 1,
   });
 
-  const [camera, updateCamera] = reactReducer({
-    x: 0,
-    y: 0,
-    zoom: 5,
-  });
-
-  const numRows = 10;
-  const numCols = 10;
+  const numRows = 50;
+  const numCols = 50;
 
   const [playerGridPosition, setPlayerGridPosition] = React.useState({
     x: numRows / 2 - 1,
     y: numCols / 2 - 1,
   });
-
-  const playerGridPositionRef = React.useRef(playerGridPosition);
 
   React.useEffect(() => {
     const unsubscribe = input.createCallback("pause", () => {
@@ -55,62 +41,6 @@ export const GameScreen = ({}: GameScreenProps) => {
     };
   }, []);
 
-  useTick((delta) => {
-    const input = useInput.getState();
-
-    let xChange = 0;
-    let yChange = 0;
-    let flipped = state.flipx;
-    const speed = 10 * (1 / camera.zoom);
-
-    if (input.cameraLeft.isPressed) {
-      xChange += speed;
-      flipped = true;
-    } else if (input.cameraRight.isPressed) {
-      xChange -= speed;
-      flipped = false;
-    }
-
-    if (input.cameraUp.isPressed) {
-      yChange += speed / 2;
-    } else if (input.cameraDown.isPressed) {
-      yChange -= speed / 2;
-    }
-
-    if (xChange || yChange) {
-      updateCamera({
-        x: camera.x + xChange,
-        y: camera.y + yChange,
-      });
-    }
-
-    const scaleFactor = 0.1;
-    const maxZoomIn = 5;
-    const maxZoomOut = 0.000001;
-
-    if (input.zoomIn.isPressed) {
-      let newValue = camera.zoom + scaleFactor * camera.zoom;
-
-      if (newValue >= maxZoomIn) {
-        newValue = maxZoomIn;
-      }
-
-      camera.zoom = newValue;
-    }
-
-    if (input.zoomOut.isPressed) {
-      let newValue = camera.zoom - scaleFactor * camera.zoom;
-
-      if (newValue <= maxZoomOut) {
-        newValue = maxZoomOut;
-      }
-
-      camera.zoom = newValue;
-    }
-
-    updateContainerPosition();
-  });
-
   const grid = React.useMemo(() => {
     const grid: {
       x: number;
@@ -120,8 +50,8 @@ export const GameScreen = ({}: GameScreenProps) => {
       center: { x: number; y: number };
     }[][] = [];
 
-    const tileHeight = 257;
-    const tileWidth = 512;
+    const tileHeight = 32;
+    const tileWidth = 64;
 
     for (let row = 0; row < numRows; row++) {
       const rowValue = row / 2;
@@ -185,435 +115,24 @@ export const GameScreen = ({}: GameScreenProps) => {
     return tiles;
   }, [grid]);
 
-  // React.useEffect(() => {
-  //   const unsubscribe = input.createCallback("zoomOut", () => {
-  //     console.log("zoomOut");
-
-  //     updateState({
-  //       width: state.width * 1.1,
-  //       height: state.height * 1.1,
-  //     });
-  //   });
-
-  //   const unsubscribe2 = input.createCallback("zoomIn", () => {
-  //     console.log("zoomIn");
-
-  //     updateState({
-  //       width: state.width * -1.1,
-  //       height: state.height * -1.1,
-  //     });
-  //   });
-
-  //   return () => {
-  //     unsubscribe();
-  //     unsubscribe2();
-  //   };
-  // }, [state.width, state.height]);
-
-  const updateContainerPosition = () => {
-    updateState({
-      x: camera.x * camera.zoom + window.innerWidth / 2,
-      y: camera.y * camera.zoom + window.innerHeight / 2,
-      scale: camera.zoom,
-    });
-  };
-
-  const movePlayer = (direction: "up" | "down" | "left" | "right") => {
-    let updatedX = playerGridPositionRef.current.x;
-    let updatedY = playerGridPositionRef.current.y;
-
-    if (direction === "up") {
-      updatedX = updatedX + 1;
-    } else if (direction === "down") {
-      updatedX = updatedX - 1;
-    } else if (direction === "left") {
-      updatedY = updatedY - 1;
-    } else if (direction === "right") {
-      updatedY = updatedY + 1;
-    }
-
-    if (updatedX !== undefined && grid[updatedX][updatedY] !== undefined) {
-      setPlayerGridPosition({
-        x: updatedX,
-        y: updatedY,
-      });
-
-      playerGridPositionRef.current = {
-        x: updatedX,
-        y: updatedY,
-      };
-    }
-  };
+  const [playerPosition, updatePlayerPosition] = React.useState<{
+    x: number;
+    y: number;
+  }>({ x: 0, y: 0 });
 
   return (
-    <Container
-      x={state.x}
-      y={state.y}
-      // width={state.width}
-      // height={state.height}
-      scale={{
-        y: state.scale,
-        x: state.scale,
-      }}
+    <Camera
+      // x={grid[numRows / 2][numCols / 2].center.x}
+      // y={grid[numRows / 2][numCols / 2].center.y}
+      x={playerPosition.x}
+      y={playerPosition.y}
     >
       {renderGrid}
-      {/* <Torch x={50} y={50} />
-      <Torch x={200} y={50} />
-      <Torch x={600} y={50} /> */}
-      {/* <Container x={2000} y={50}>
-        <Torch x={-60} y={-90} />
-        <StaticObject x={0} y={0} texture={PIXI.Texture.from(chest)} />
-        <Torch x={200} y={50} />
-      </Container> */}
-
-      {/* <Torch x={grid[0][1].center.x} y={grid[0][1].center.y} /> */}
-
-      <StaticObject
-        sprite={house}
-        x={grid[0][0].center.x}
-        y={grid[0][0].center.y}
-        anchor={[0.5, 0.5]}
-      />
-
-      <StaticObject
-        sprite={house}
-        x={grid[1][0].center.x}
-        y={grid[1][0].center.y}
-        anchor={[0.5, 0.5]}
-      />
-
-      <StaticObject
-        sprite={house}
-        x={grid[0][1].center.x}
-        y={grid[0][1].center.y}
-        anchor={[0.5, 0.5]}
-      />
-
-      <StaticObject
-        sprite={house}
-        x={grid[1][1].center.x}
-        y={grid[1][1].center.y}
-        anchor={[0.5, 0.5]}
-      />
-
-      <StaticObject
-        sprite={house}
-        x={grid[0][2].center.x}
-        y={grid[0][2].center.y}
-        anchor={[0.5, 0.5]}
-      />
-
-      <StaticObject
-        sprite={house}
-        x={grid[1][2].center.x}
-        y={grid[1][2].center.y}
-        anchor={[0.5, 0.5]}
-      />
-
-      <StaticObject
-        sprite={mountain}
-        x={grid[8][1].center.x}
-        y={grid[8][1].center.y}
-        anchor={[0.5, 0.5]}
-        scale={2}
-      />
-
-      <StaticObject
-        sprite={forest}
-        x={grid[3][1].center.x}
-        y={grid[3][1].center.y}
-        anchor={[0.5, 0.5]}
-        scale={2}
-      />
-
-      <StaticObject
-        sprite={forest2}
-        x={grid[5][3].center.x}
-        y={grid[5][3].center.y}
-        anchor={[0.5, 0.5]}
-        scale={0.5}
-      />
-      <StaticObject
-        sprite={forest2}
-        x={grid[6][3].center.x}
-        y={grid[6][3].center.y}
-        anchor={[0.5, 0.5]}
-        scale={0.5}
-      />
-      <StaticObject
-        sprite={forest2}
-        x={grid[7][3].center.x}
-        y={grid[7][3].center.y}
-        anchor={[0.5, 0.5]}
-        scale={0.5}
-      />
-
-      <StaticObject
-        sprite={forest2}
-        x={grid[4][6].center.x}
-        y={grid[4][6].center.y}
-        anchor={[0.5, 0.5]}
-        scale={0.5}
-      />
-
-      <StaticObject
-        sprite={forest2}
-        x={grid[5][6].center.x}
-        y={grid[5][5].center.y}
-        anchor={[0.5, 0.5]}
-        scale={0.5}
-      />
-
-      <StaticObject
-        sprite={forest2}
-        x={grid[6][4].center.x}
-        y={grid[6][4].center.y}
-        anchor={[0.5, 0.5]}
-        scale={0.5}
-      />
-
-      <StaticObject
-        sprite={mountain}
-        x={grid[4][1].center.x}
-        y={grid[4][1].center.y}
-        anchor={[0.5, 0.5]}
-        scale={2}
-      />
-      <StaticObject
-        sprite={mountain}
-        x={grid[6][1].center.x}
-        y={grid[6][1].center.y}
-        anchor={[0.5, 0.5]}
-        scale={2}
-      />
-
-      <StaticObject
-        sprite={mountain}
-        x={grid[8][1].center.x}
-        y={grid[8][1].center.y}
-        anchor={[0.5, 0.5]}
-        scale={2}
-      />
-
-      <StaticObject
-        sprite={house}
-        x={grid[6][2].center.x}
-        y={grid[6][2].center.y}
-        anchor={[0.5, 0.5]}
-        scale={0.2}
-      />
-
-      <StaticObject
-        sprite={house}
-        x={grid[8][2].center.x}
-        y={grid[8][2].center.y}
-        anchor={[0.5, 0.5]}
-        scale={0.2}
-      />
-
-      <StaticObject
-        sprite={house}
-        x={grid[8][3].center.x}
-        y={grid[8][3].center.y}
-        anchor={[0.5, 0.5]}
-        scale={0.2}
-      />
-
-      <Container x={grid[5][4].center.x} y={grid[5][4].center.y}>
-        <StaticObject
-          sprite={house}
-          x={0}
-          y={0}
-          anchor={[0.5, 0.5]}
-          scale={0.2}
-        />
-        <StaticObject
-          sprite={house}
-          x={50}
-          y={50}
-          anchor={[0.5, 0.5]}
-          scale={0.2}
-        />
-        <StaticObject
-          sprite={house}
-          x={50}
-          y={50}
-          anchor={[0.5, 0.5]}
-          scale={[0.2]}
-        />
-        <StaticObject
-          sprite={house}
-          x={125}
-          y={50}
-          anchor={[0.5, 0.5]}
-          scale={[0.2]}
-        />
-        <StaticObject
-          sprite={house}
-          x={125}
-          y={100}
-          anchor={[0.5, 0.5]}
-          scale={[0.2]}
-        />
-
-        <StaticObject
-          sprite={house}
-          x={50}
-          y={100}
-          anchor={[0.5, 0.5]}
-          scale={[0.2]}
-        />
-
-        <StaticObject
-          sprite={house}
-          x={0}
-          y={75}
-          anchor={[0.5, 0.5]}
-          scale={[0.2]}
-        />
-      </Container>
-
-      <Container x={grid[4][2].center.x} y={grid[4][2].center.y}>
-        <StaticObject
-          sprite={house}
-          x={0}
-          y={0}
-          anchor={[0.5, 0.5]}
-          scale={0.2}
-        />
-        <StaticObject
-          sprite={house}
-          x={50}
-          y={50}
-          anchor={[0.5, 0.5]}
-          scale={0.2}
-        />
-        <StaticObject
-          sprite={house}
-          x={50}
-          y={50}
-          anchor={[0.5, 0.5]}
-          scale={[0.2]}
-        />
-        <StaticObject
-          sprite={house}
-          x={125}
-          y={50}
-          anchor={[0.5, 0.5]}
-          scale={[0.2]}
-        />
-        <StaticObject
-          sprite={house}
-          x={125}
-          y={100}
-          anchor={[0.5, 0.5]}
-          scale={[0.2]}
-        />
-
-        <StaticObject
-          sprite={house}
-          x={50}
-          y={100}
-          anchor={[0.5, 0.5]}
-          scale={[0.2]}
-        />
-      </Container>
-
-      <StaticObject sprite={house} anchor={[0.5, 0.5]} scale={0.2} />
-
-      <StaticObject
-        sprite={house}
-        x={grid[7][4].center.x}
-        y={grid[7][4].center.y}
-        anchor={[0.5, 0.5]}
-        scale={0.2}
-      />
-
-      {/* <Torch x={grid[4][1].center.x} y={grid[4][1].center.y} />
-      <StaticObject
-        texture={PIXI.Texture.from(house)}
-        x={grid[3][1].center.x}
-        y={grid[3][1].center.y}
-        anchor={[0.5, 0.65]}
-        scale={5}
-      />
-
-      <Torch x={grid[2][1].center.x} y={grid[2][1].center.y} />
-
-      <StaticObject
-        texture={PIXI.Texture.from(house)}
-        x={grid[1][1].center.x}
-        y={grid[1][1].center.y}
-        anchor={[0.5, 0.65]}
-        scale={5}
-      />
-
-      <StaticObject
-        texture={PIXI.Texture.from(house)}
-        x={grid[8][2].center.x}
-        y={grid[8][2].center.y}
-        anchor={[0.5, 0.65]}
-        scale={{
-          x: -5,
-          y: 5,
-        }}
-      />
-
-      <Torch x={grid[8][3].center.x} y={grid[8][3].center.y} />
-
-      <StaticObject
-        texture={PIXI.Texture.from(house)}
-        x={grid[8][4].center.x}
-        y={grid[8][4].center.y}
-        anchor={[0.5, 0.65]}
-        scale={{
-          x: -5,
-          y: 5,
-        }}
-      />
-
-      <Torch x={grid[8][5].center.x} y={grid[8][5].center.y} />
-
-      <Torch x={grid[4][1].center.x} y={grid[4][1].center.y} />
-      <StaticObject
-        texture={PIXI.Texture.from(house)}
-        x={grid[3][1].center.x}
-        y={grid[3][1].center.y}
-        anchor={[0.5, 0.65]}
-        scale={5}
-      />
-
-      <StaticObject
-        texture={PIXI.Texture.from(house)}
-        x={grid[8][6].center.x}
-        y={grid[8][6].center.y}
-        anchor={[0.5, 0.65]}
-        scale={{
-          x: -5,
-          y: 5,
-        }}
-      /> */}
 
       <Player
-        position={{
-          x: grid[playerGridPosition.x][playerGridPosition.y].center.x,
-          y: grid[playerGridPosition.x][playerGridPosition.y].center.y,
-        }}
-        onMoveUp={() => movePlayer("up")}
-        onMoveDown={() => movePlayer("down")}
-        onMoveLeft={() => movePlayer("left")}
-        onMoveRight={() => movePlayer("right")}
-
-        // updatePosition={(x, y, width, height) => {
-        //   const newX = x * -1 + state.width / 2;
-        //   const newY = y * -1 + state.height / 2;
-
-        //   updateState({
-        //     x: newX,
-        //     y: newY,
-        //   });
-        // }}
+        position={playerPosition}
+        updatePosition={(position) => updatePlayerPosition(position)}
       />
-    </Container>
+    </Camera>
   );
 };

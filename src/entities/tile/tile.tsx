@@ -25,8 +25,10 @@ export const Tile = (props: Props) => {
     >
       <Sprite
         texture={Pixi.Texture.from(ground, {
-          scaleMode: Pixi.SCALE_MODES.NEAREST,
+          scaleMode: Pixi.SCALE_MODES.LINEAR,
         })}
+        height={height}
+        width={width}
         anchor={{
           x: 0.5,
           y: 0.5,
@@ -45,7 +47,7 @@ export const Tile = (props: Props) => {
         text={`${xIndex}, ${yIndex}`}
         style={{
           fill: "white",
-          fontSize: 12,
+          fontSize: 8,
         }}
         anchor={{
           x: 0.5,
