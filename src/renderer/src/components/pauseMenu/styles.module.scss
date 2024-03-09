@@ -1,0 +1,58 @@
+.container {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  align-items: center;
+  padding: vars.$spacing-primary * 2;
+  gap: vars.$spacing-primary;
+  overflow: auto;
+  z-index: 500;
+
+  .menu {
+    width: 100%;
+    max-width: 800px;
+    gap: vars.$spacing-primary;
+
+    .menuHeading {
+      font-size: vars.$font-size-h1;
+    }
+  }
+
+  .title {
+    font-size: 50px;
+    justify-content: center;
+  }
+
+  .backButton {
+    position: fixed;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    font-size: vars.$font-size-display;
+    padding: vars.$spacing-primary;
+  }
+
+  .keybinds {
+  }
+
+  .buttons {
+    gap: vars.$spacing-primary;
+    flex: 1;
+    justify-content: center;
+
+    .button {
+      background-color: vars.$color-surface;
+      color: white;
+      justify-content: center;
+      align-items: center;
+      border-radius: vars.$roundness;
+      font-size: vars.$font-size-display;
+      cursor: pointer;
+      padding: vars.$spacing-primary;
+
+      &:active {
+        scale: 0.9;
+      }
+    }
+  }
+}

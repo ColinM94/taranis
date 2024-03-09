@@ -1,0 +1,23 @@
+.container {
+  background-color: vars.$color-surface;
+  width: 100%;
+  height: 50px;
+  max-width: 200px;
+  border-radius: vars.$roundness;
+  overflow: hidden;
+
+  .knob {
+    height: 100%;
+    width: 50%;
+  }
+
+  .knobActive {
+    margin-left: auto;
+    background-color: vars.$color-primary;
+  }
+
+  .knobInactive {
+    margin-right: auto;
+    background-color: vars.$color-surface2;
+  }
+}
