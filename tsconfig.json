@@ -1,8 +1,26 @@
 {
+  "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
+  "include": [
+    "electron.vite.config.*",
+    "src/main/**/*",
+    "src/preload/**/*",
+    "src/renderer/**/*",
+    "global.d.ts"
+  ],
   "compilerOptions": {
-    "baseUrl": "src/renderer/src",
-    "types": ["vite/client"]
+    "baseUrl": "src/renderer",
+    "types": ["vite/client", "electron-vite/node"],
+    "target": "ESNext",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "verbatimModuleSyntax": false,
+    "allowJs": false,
+    "moduleDetection": "force",
+    "useDefineForClassFields": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx"
   },
-  "files": [],
-  "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.web.json" }]
+  "files": []
 }

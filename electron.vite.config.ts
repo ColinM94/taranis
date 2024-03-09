@@ -12,18 +12,18 @@ export default defineConfig({
   renderer: {
     resolve: {
       alias: {
-        '@renderer': resolve('src/renderer/src'),
-        assets: resolve('src/renderer/src/assets'),
-        components: resolve('src/renderer/src/components'),
-        consts: resolve('src/renderer/src/consts'),
-        config: resolve('src/renderer/src/config'),
-        entities: resolve('src/renderer/src/entities'),
-        scenes: resolve('src/renderer/src/scenes'),
-        screens: resolve('src/renderer/src/screens'),
-        store: resolve('src/renderer/src/store'),
-        styles: resolve('src/renderer/src/styles'),
-        types: resolve('src/renderer/src/types'),
-        utils: resolve('src/renderer/src/utils')
+        '@renderer': resolve('src/renderer'),
+        assets: resolve('src/renderer/assets'),
+        components: resolve('src/renderer/components'),
+        consts: resolve('src/renderer/consts'),
+        config: resolve('src/renderer/config'),
+        entities: resolve('src/renderer/entities'),
+        scenes: resolve('src/renderer/scenes'),
+        screens: resolve('src/renderer/screens'),
+        store: resolve('src/renderer/store'),
+        styles: resolve('src/renderer/styles'),
+        types: resolve('src/renderer/types'),
+        utils: resolve('src/renderer/utils')
       }
     },
     css: {

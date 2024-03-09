@@ -1,5 +1,0 @@
-export * from "./pauseMenu/pauseMenu";
-export * from "./hud/hud";
-export * from "./button/button";
-export * from "./geometry/geometry";
-export * from "./inputSlider/inputSlider";
