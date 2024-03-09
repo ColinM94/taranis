@@ -1,26 +1,27 @@
 {
-  "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
-  "include": [
-    "electron.vite.config.*",
-    "src/main/**/*",
-    "src/preload/**/*",
-    "src/renderer/**/*",
-    "global.d.ts"
-  ],
   "compilerOptions": {
-    "baseUrl": "src/renderer",
-    "types": ["vite/client", "electron-vite/node"],
-    "target": "ESNext",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "verbatimModuleSyntax": false,
-    "allowJs": false,
-    "moduleDetection": "force",
+    "target": "ES2020",
     "useDefineForClassFields": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "baseUrl": "src",
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx"
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "types": ["vite/client"]
   },
-  "files": []
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
