@@ -9,7 +9,7 @@ interface Props {
 export const Game = ({ children, className }: Props): JSX.Element => {
   return (
     <div className={className}>
-      <Canvas>{children}</Canvas>
+      <Canvas shadows>{children}</Canvas>
     </div>
   )
 }

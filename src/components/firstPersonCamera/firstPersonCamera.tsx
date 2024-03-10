@@ -12,12 +12,28 @@ export const FirstPersonCamera = ({ position = [0, 0, 0] }: Props) => {
 
   const direction = new Vector3(0, 1, 0)
   const camera = React.useRef<PerspectiveCameraType>(null)
+  const pointerControls = React.useRef<any>(null)
 
   React.useEffect(() => {
     if (!camera.current) return
 
     camera.current.position.set(position[0], position[1], position[2])
   }, [])
+
+  React.useEffect(() => {
+    if (!pointerControls.current) return
+
+    if (isPaused) {
+      pointerControls.current.unlock()
+      setIsPaused(true)
+    } else {
+      setTimeout(() => {
+        pointerControls.current.connect()
+        pointerControls.current.lock()
+        setIsPaused(false)
+      }, 100)
+    }
+  }, [isPaused])
 
   useFrame((_state, delta) => {
     if (!camera.current) return
@@ -59,13 +75,13 @@ export const FirstPersonCamera = ({ position = [0, 0, 0] }: Props) => {
       //   camera.current.rotateY(-input.lookRight.xAxis * lookMultiplier)
       camera.current.rotateOnWorldAxis(direction, -input.lookRight.xAxis * lookMultiplier)
     }
-
-    console.log(camera.current.rotation.x, camera.current.rotation.y, camera.current.rotation.z)
   })
 
   return (
     <>
-      {!isPaused && <PointerLockControls makeDefault onUnlock={() => setIsPaused(true)} />}
+      {!isPaused && (
+        <PointerLockControls ref={pointerControls} makeDefault onUnlock={() => setIsPaused(true)} />
+      )}
       <PerspectiveCamera ref={camera} fov={fov} makeDefault />
     </>
   )
