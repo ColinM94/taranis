@@ -30,21 +30,29 @@ export const Controls = (): null => {
     return tempKeyMap
   }, [])
 
-  const handlePress = (key: Bind, isPressed: boolean): void => {
+  const handlePress = (key: Bind, isPressed: boolean, xAxis?: number, yAxis?: number): void => {
     const input = useInput.getState()
     const keys = keyMap.get(key)
 
     if (!keys || keys.length === 0) return
 
     for (const key of keys) {
-      if (tempState.current[key].isPressed === isPressed) continue
+      if (
+        tempState.current[key].isPressed === isPressed &&
+        xAxis === undefined &&
+        yAxis === undefined
+      ) {
+        continue
+      }
 
       tempState.current[key].isPressed = isPressed
 
       isPressed && input.callbacks[key]?.(isPressed)
 
       input.updateKeyBind(key, {
-        isPressed
+        isPressed,
+        ...(xAxis !== undefined && { xAxis }),
+        ...(yAxis !== undefined && { yAxis })
       })
     }
   }
@@ -90,9 +98,30 @@ export const Controls = (): null => {
       if (!controller) continue
 
       for (let i = 0; i < controller.buttons.length; i++) {
+        const deadzone = 0.1
+        let xAxis: number | undefined
+        let yAxis: number | undefined
+
+        if (i === 10 || i === 11) {
+          const xValue = i === 10 ? controller.axes[0] : controller.axes[2]
+          const yValue = i === 10 ? controller.axes[1] : controller.axes[3]
+
+          if (Math.abs(xValue) > deadzone) {
+            xAxis = xValue
+          } else {
+            xAxis = 0
+          }
+
+          if (Math.abs(yValue) > deadzone) {
+            yAxis = yValue
+          } else {
+            yAxis = 0
+          }
+        }
+
         const button = controller.buttons[i]
         const bind = `controller:${i}` as Bind
-        handlePress(bind, button.pressed)
+        handlePress(bind, button.pressed, xAxis, yAxis)
       }
     }
   }

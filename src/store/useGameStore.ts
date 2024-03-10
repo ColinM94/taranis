@@ -25,7 +25,7 @@ interface GameState {
 export const useGameStore = createZustandStore<GameState>({
   name: 'game',
   data: (set) => ({
-    activeScreen: { name: 'preloader' },
+    activeScreen: { name: 'game' },
     setActiveScreen: (name, params): void =>
       set({
         activeScreen: {

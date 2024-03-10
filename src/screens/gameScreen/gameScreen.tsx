@@ -1,14 +1,13 @@
 import * as React from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Mesh } from 'three'
-import { PerspectiveCamera, PointerLockControls, Sphere } from '@react-three/drei'
+import { Sphere } from '@react-three/drei'
 
 import { useGameStore, useInput } from 'store'
-import { Geometry } from 'components'
+import { FirstPersonCamera, Geometry } from 'components'
 
 const Sphere2 = ({ position, args }: any) => {
   const ref = React.useRef<any>(null)
-
   const { showWireframes } = useGameStore()
 
   const [isHovered, setIsHovered] = React.useState(false)
@@ -41,7 +40,8 @@ const Sphere2 = ({ position, args }: any) => {
 
 export const GameScreen = () => {
   const input = useInput()
-  const { isPaused, setIsPaused, fov, dayNightCycle, dayNightCycleSpeed } = useGameStore()
+
+  const { isPaused, setIsPaused, dayNightCycle, dayNightCycleSpeed } = useGameStore()
 
   const sphereRef = React.useRef<Mesh>(null)
   const camera = React.useRef<any>(null)
@@ -88,6 +88,8 @@ export const GameScreen = () => {
   useFrame((state, delta) => {
     if (isPaused) return
 
+    // console.log(input.strafeLeft)
+
     if (!camera.current) return
 
     if (sphereRef.current) {
@@ -95,7 +97,6 @@ export const GameScreen = () => {
     }
 
     if (dayNightCycle) {
-      console.log('helllooo')
       if (sun.current) {
         sun.current.position.x = Math.sin(state.clock.elapsedTime * dayNightCycleSpeed) * 100
         sun.current.position.y = Math.cos(state.clock.elapsedTime * dayNightCycleSpeed) * 100
@@ -113,24 +114,31 @@ export const GameScreen = () => {
       setSunBrightness(100000)
     }
 
-    const multiplier = 3
+    const multiplier = 25
+    const lookSensitivityMultiplier = 2
 
-    if (pointerControls?.current?.moveRight && pointerControls?.current?.moveForward) {
-      if (input.moveLeft.isPressed) {
-        pointerControls.current.moveRight(-delta * multiplier)
-      } else if (input.moveRight.isPressed) {
-        pointerControls.current.moveRight(delta * multiplier)
-      }
+    if (pointerControls?.current?.moveRight && input.strafeLeft.xAxis !== undefined) {
+      pointerControls.current.moveRight(Number(input.strafeLeft.xAxis) * delta * multiplier)
+    }
 
-      if (input.moveDown.isPressed) {
-        pointerControls.current.moveForward(-delta * multiplier)
-      } else if (input.moveUp.isPressed) {
-        pointerControls.current.moveForward(delta * multiplier)
-      }
+    if (pointerControls?.current?.moveForward && input.moveForward.yAxis !== undefined) {
+      pointerControls.current.moveForward(-Number(input.moveForward.yAxis) * delta * multiplier)
+    }
 
-      if (input.attack.isPressed) {
-        setScale((prev) => prev + 0.01)
-      }
+    if (camera.current && input.lookRight.xAxis !== undefined) {
+      camera.current.rotateY(-Number(input.lookRight.xAxis) * delta * lookSensitivityMultiplier)
+    }
+
+    if (pointerControls.current && input.lookUp.yAxis !== undefined) {
+      console.log(pointerControls.current)
+      pointerControls.current.rotation.set(
+        -Number(input.lookRight.yAxis) * delta * lookSensitivityMultiplier,
+        0,
+        0
+      )
+    }
+    if (input.attack.isPressed) {
+      setScale((prev) => prev + 0.01)
     }
   })
 
@@ -185,11 +193,9 @@ export const GameScreen = () => {
         side="double"
       />
 
-      {!isPaused && (
-        <PointerLockControls ref={pointerControls} makeDefault onUnlock={() => setIsPaused(true)} />
-      )}
+      <FirstPersonCamera position={[3, 3, 0]} />
 
-      <PerspectiveCamera ref={camera} makeDefault position={[3, 3, 0]} fov={fov} />
+      {/* <PerspectiveCamera ref={camera} makeDefault position={[3, 3, 0]} fov={fov} />  */}
     </group>
   )
 }

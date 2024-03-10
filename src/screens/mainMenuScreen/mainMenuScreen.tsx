@@ -25,8 +25,6 @@ export const MainMenuScreen = ({ showClickToStart }: MainMenuScreenProps): JSX.E
   }
 
   const handleNavigate = React.useCallback(() => {
-    console.log('navigateTo', selectedButton)
-
     if (selectedButton === 0) navigate('game')
     if (selectedButton === 1) navigate('settings')
     if (selectedButton === 2) handleQuit()
@@ -51,8 +49,6 @@ export const MainMenuScreen = ({ showClickToStart }: MainMenuScreenProps): JSX.E
       unsubscribe3()
     }
   }, [selectedButton])
-
-  console.log('show')
 
   React.useEffect(() => {
     if (showMenu) {
