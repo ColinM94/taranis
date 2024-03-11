@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { useFrame } from '@react-three/fiber'
-import { useGameStore, useInput } from 'store'
-import { Props } from './types'
 import { PerspectiveCamera, PointerLockControls } from '@react-three/drei'
 import { PerspectiveCamera as PerspectiveCameraType, Vector3 } from 'three'
+
+import { useGameStore, useInput } from 'store'
+import { Props } from './types'
 
 export const FirstPersonCamera = ({ position = [0, 0, 0] }: Props) => {
   const input = useInput()

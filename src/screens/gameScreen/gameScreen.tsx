@@ -1,24 +1,23 @@
 import * as React from 'react'
-import { Physics, useBox, BoxProps, useSphere, SphereProps } from '@react-three/cannon'
+import { RigidBody, RigidBodyProps } from '@react-three/rapier'
 
 import { FirstPersonCamera, Plane, Sun } from 'components'
 import { useInput } from 'store'
-import { Mesh } from 'three'
 import { randomColor, randomNumber } from 'utils'
 
-const Cube = (props: BoxProps) => {
-  const [ref] = useBox<Mesh>(() => ({ mass: 0.1, ...props }))
-
-  return (
-    <mesh castShadow ref={ref}>
-      <boxGeometry />
-      <meshStandardMaterial color={randomColor()} />
-    </mesh>
-  )
+const randomPosition = (): [number, number, number] => {
+  return [randomNumber(25, 80), randomNumber(75, 100), randomNumber(25, 80)]
 }
 
-const randomPosition = () => {
-  return [randomNumber(25, 80), randomNumber(75, 100), randomNumber(25, 80)]
+const Cube = (props: RigidBodyProps) => {
+  return (
+    <RigidBody colliders="cuboid" mass={2} {...props}>
+      <mesh castShadow>
+        <boxGeometry />
+        <meshStandardMaterial color={randomColor()} />
+      </mesh>
+    </RigidBody>
+  )
 }
 
 const Cubes = () => {
@@ -28,9 +27,9 @@ const Cubes = () => {
 
   React.useEffect(() => {
     const unsubscribe = input.createCallback('attack', () => {
-      const newCubes = []
+      const newCubes: JSX.Element[] = []
 
-      for (let i = 0; i < 25; i++) {
+      for (let i = 0; i < 250; i++) {
         newCubes.push(<Cube position={randomPosition()} key={cubes.length + i} />)
       }
 
@@ -49,14 +48,14 @@ const Cubes = () => {
   return cubes
 }
 
-const Sphere = (props: SphereProps) => {
-  const [ref] = useSphere<Mesh>(() => ({ mass: 0.1, ...props }))
-
+const Sphere = (props: RigidBodyProps) => {
   return (
-    <mesh castShadow ref={ref}>
-      <sphereGeometry args={[1, 50, 50]} />
-      <meshStandardMaterial color={randomColor()} />
-    </mesh>
+    <RigidBody colliders="ball" mass={2} {...props}>
+      <mesh castShadow>
+        <sphereGeometry args={[1, 50, 50]} />
+        <meshStandardMaterial color={randomColor()} />
+      </mesh>
+    </RigidBody>
   )
 }
 
@@ -66,10 +65,10 @@ const Spheres = () => {
   const [spheres, setSpheres] = React.useState<JSX.Element[]>([])
 
   React.useEffect(() => {
-    const unsubscribe = input.createCallback('attackSecondary', () => {
-      const newSpheres = []
+    const unsubscribe = input.createCallback('attack', () => {
+      const newSpheres: JSX.Element[] = []
 
-      for (let i = 0; i < 25; i++) {
+      for (let i = 0; i < 250; i++) {
         newSpheres.push(<Sphere position={randomPosition()} key={spheres.length + i} />)
       }
 
@@ -90,12 +89,12 @@ const Spheres = () => {
 
 export const GameScreen = () => {
   return (
-    <Physics>
+    <>
       <Sun />
-      <Cubes />
       <Spheres />
+      <Cubes />
       <Plane height={1000} width={1000} />
-      <FirstPersonCamera position={[3, 3, 0]} />
-    </Physics>
+      <FirstPersonCamera position={[0, 10, 0]} />
+    </>
   )
 }

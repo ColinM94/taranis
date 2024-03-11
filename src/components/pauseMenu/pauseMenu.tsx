@@ -19,7 +19,9 @@ export const PauseMenu = (): JSX.Element | null => {
     dayNightCycle,
     setDayNightCycle,
     dayNightCycleSpeed,
-    setDayNightCycleSpeed
+    setDayNightCycleSpeed,
+    debugPhysics,
+    setDebugPhysics
   } = useGameStore()
   const input = useInput()
 
@@ -79,6 +81,9 @@ export const PauseMenu = (): JSX.Element | null => {
 
           <div className={styles.menuHeading}>Show Wireframes</div>
           <InputToggle value={showWireframes} setValue={setShowWireframes} />
+
+          <div className={styles.menuHeading}>Show Physics Debug</div>
+          <InputToggle value={debugPhysics} setValue={setDebugPhysics} />
 
           <div className={styles.menuHeading}>Day/Night Cycle</div>
           <InputToggle

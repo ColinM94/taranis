@@ -20,6 +20,8 @@ interface GameState {
   setDayNightCycleSpeed: (dayNightCycleSpeed: number) => void
   dayNightCycle: boolean
   setDayNightCycle: (dayNightCycle: boolean) => void
+  debugPhysics: boolean
+  setDebugPhysics: (debugPhysics: boolean) => void
 }
 
 export const useGameStore = createZustandStore<GameState>({
@@ -48,7 +50,9 @@ export const useGameStore = createZustandStore<GameState>({
     dayNightCycleSpeed: 1,
     setDayNightCycleSpeed: (dayNightCycleSpeed): void => set({ dayNightCycleSpeed }),
     dayNightCycle: false,
-    setDayNightCycle: (dayNightCycle): void => set({ dayNightCycle })
+    setDayNightCycle: (dayNightCycle): void => set({ dayNightCycle }),
+    debugPhysics: false,
+    setDebugPhysics: (debugPhysics): void => set({ debugPhysics })
   }),
   persistState: false
 })
