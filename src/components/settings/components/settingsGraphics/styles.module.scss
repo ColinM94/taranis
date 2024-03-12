@@ -1,2 +1,19 @@
 .container {
 }
+
+.option {
+  flex-direction: row;
+  align-items: center;
+  gap: vars.$spacing-primary;
+
+  .optionLabel {
+    font-size: vars.$font-size-h2;
+    width: 20%;
+  }
+
+  .optionInput {
+    flex: 4;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}

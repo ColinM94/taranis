@@ -4,6 +4,7 @@
   top: 0;
   height: 100%;
   width: 100%;
+  align-items: center;
 
   .header {
     font-size: vars.$font-size-display;
@@ -29,8 +30,7 @@
     flex-direction: row;
     gap: vars.$spacing-primary;
     padding: vars.$spacing-primary;
-    gap: vars.$spacing-primary;
-    flex: 1;
+    width: min(100%, vars.$breakpoint-extra);
 
     .buttons {
       gap: vars.$spacing-primary;
@@ -41,12 +41,12 @@
     }
 
     .content {
-      flex: 3;
       gap: vars.$spacing-primary;
       background-color: vars.$color-background-translucent;
       padding: vars.$spacing-primary;
       border-radius: vars.$roundness;
       overflow: auto;
+      flex: 2;
     }
 
     .heading {
