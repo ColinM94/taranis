@@ -1,13 +1,17 @@
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+
+import backgroundImage from 'assets/images/background.jpg'
+import { useGameStore } from 'store'
 import { GameScreen, MainMenuScreen, PreloaderScreen, SettingsScreen } from 'screens'
 import { PauseMenu } from 'components'
-import { useGameStore } from 'store'
-
-import { Controls } from './controls'
 import { Game } from './game'
-import 'styles/global.scss'
-import styles from './styles/main.module.scss'
+import { Controls } from './controls'
 
-export const Main = (): JSX.Element => {
+import styles from './styles/main.module.scss'
+import 'styles/global.scss'
+
+const Main = (): JSX.Element => {
   const { activeScreen, isPaused } = useGameStore()
 
   return (
@@ -15,6 +19,7 @@ export const Main = (): JSX.Element => {
       <Controls />
 
       <div className={styles.screens}>
+        <img src={backgroundImage} className={styles.backgroundImage} />
         {activeScreen.name === 'preloader' && <PreloaderScreen />}
         {activeScreen.name === 'mainMenu' && <MainMenuScreen {...activeScreen.params} />}
         {activeScreen.name === 'settings' && <SettingsScreen />}
@@ -30,3 +35,9 @@ export const Main = (): JSX.Element => {
     </div>
   )
 }
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <Main />
+  </React.StrictMode>
+)

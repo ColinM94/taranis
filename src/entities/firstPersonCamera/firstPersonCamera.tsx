@@ -3,12 +3,12 @@ import { useFrame } from '@react-three/fiber'
 import { PerspectiveCamera, PointerLockControls } from '@react-three/drei'
 import { PerspectiveCamera as PerspectiveCameraType, Vector3 } from 'three'
 
-import { useGameStore, useInput } from 'store'
+import { useConfigStore, useGameStore, useInput } from 'store'
 import { Props } from './types'
 
 export const FirstPersonCamera = ({ position = [0, 0, 0] }: Props) => {
   const input = useInput()
-  const { fov } = useGameStore()
+  const config = useConfigStore()
   const { isPaused, setIsPaused } = useGameStore()
 
   const direction = new Vector3(0, 1, 0)
@@ -83,7 +83,7 @@ export const FirstPersonCamera = ({ position = [0, 0, 0] }: Props) => {
       {!isPaused && (
         <PointerLockControls ref={pointerControls} makeDefault onUnlock={() => setIsPaused(true)} />
       )}
-      <PerspectiveCamera ref={camera} fov={fov} makeDefault />
+      <PerspectiveCamera ref={camera} fov={config.fov} makeDefault />
     </>
   )
 }

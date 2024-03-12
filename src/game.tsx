@@ -9,12 +9,12 @@ interface Props {
 
 export const Game = ({ children, className }: Props): JSX.Element => {
   return (
-    <Canvas shadows>
-      <Physics debug>
-        <React.Suspense>
-          <div className={className}>{children}</div>
-        </React.Suspense>
-      </Physics>
-    </Canvas>
+    <div className={className}>
+      <Canvas shadows>
+        <Physics debug>
+          <React.Suspense>{children}</React.Suspense>
+        </Physics>
+      </Canvas>
+    </div>
   )
 }

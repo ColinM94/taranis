@@ -12,22 +12,16 @@ interface GameState {
   setShowMainMenu: (showMainMenu: boolean) => void
   showSettingsMenu: boolean
   setShowSettingsMenu: (showSettingsMenu: boolean) => void
-  showWireframes: boolean
-  setShowWireframes: (wireframe: boolean) => void
-  fov: number
-  setFov: (fov: number) => void
-  dayNightCycleSpeed: number
-  setDayNightCycleSpeed: (dayNightCycleSpeed: number) => void
-  dayNightCycle: boolean
-  setDayNightCycle: (dayNightCycle: boolean) => void
-  debugPhysics: boolean
-  setDebugPhysics: (debugPhysics: boolean) => void
 }
 
-export const useGameStore = createZustandStore<GameState>({
+interface GameActions {
+  update: (data: Partial<GameState>) => void
+}
+
+export const useGameStore = createZustandStore<GameState & GameActions>({
   name: 'game',
   data: (set) => ({
-    activeScreen: { name: 'game' },
+    activeScreen: { name: 'settings' },
     setActiveScreen: (name, params): void =>
       set({
         activeScreen: {
@@ -44,15 +38,7 @@ export const useGameStore = createZustandStore<GameState>({
     showSettingsMenu: false,
     setShowSettingsMenu: (showSettingsMenu): void => set({ showSettingsMenu }),
     showWireframes: false,
-    setShowWireframes: (showWireframes): void => set({ showWireframes }),
-    fov: 75,
-    setFov: (fov): void => set({ fov }),
-    dayNightCycleSpeed: 1,
-    setDayNightCycleSpeed: (dayNightCycleSpeed): void => set({ dayNightCycleSpeed }),
-    dayNightCycle: false,
-    setDayNightCycle: (dayNightCycle): void => set({ dayNightCycle }),
-    debugPhysics: false,
-    setDebugPhysics: (debugPhysics): void => set({ debugPhysics })
+    update: (data): void => set(data)
   }),
   persistState: false
 })

@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { RigidBody, RigidBodyProps } from '@react-three/rapier'
 
-import { FirstPersonCamera, Plane, Sun } from 'components'
 import { useInput } from 'store'
 import { randomColor, randomNumber } from 'utils'
+import { FirstPersonCamera, Plane, Sun } from 'entities'
 
 const randomPosition = (): [number, number, number] => {
   return [randomNumber(25, 80), randomNumber(75, 100), randomNumber(25, 80)]

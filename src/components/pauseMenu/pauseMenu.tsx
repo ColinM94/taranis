@@ -1,48 +1,34 @@
 import * as React from 'react'
 
-import { useGameStore, useInput } from 'store'
+import { useConfigStore, useGameStore, useInput } from 'store'
 import { navigate } from 'utils'
-import { SettingsKeybinds } from 'screens/settingsScreen/components/settingsKeybinds/settingsKeybinds'
-import { SettingsControllers } from 'screens/settingsScreen/components/settingsControllers/settingsControllers'
 import { Button, InputSlider, InputToggle } from 'components'
 
 import styles from './styles.module.scss'
 
 export const PauseMenu = (): JSX.Element | null => {
-  const {
-    isPaused,
-    setIsPaused,
-    fov,
-    setFov,
-    showWireframes,
-    setShowWireframes,
-    dayNightCycle,
-    setDayNightCycle,
-    dayNightCycleSpeed,
-    setDayNightCycleSpeed,
-    debugPhysics,
-    setDebugPhysics
-  } = useGameStore()
+  const game = useGameStore()
+  const config = useConfigStore()
   const input = useInput()
 
   const [activeMenu, setActiveMenu] = React.useState('main')
 
   const handleQuit = (): void => {
     navigate('mainMenu')
-    setIsPaused(false)
+    game.setIsPaused(false)
   }
 
-  if (!isPaused) return null
+  if (!game.isPaused) return null
 
   React.useEffect(() => {
     const unsub = input.createCallback('pause', () => {
-      setIsPaused(false)
+      game.setIsPaused(false)
     })
 
     return () => {
       unsub()
     }
-  }, [isPaused])
+  }, [game.isPaused])
 
   React.useEffect(() => {
     setActiveMenu('main')
@@ -58,46 +44,46 @@ export const PauseMenu = (): JSX.Element | null => {
     <div className={styles.container}>
       <div className={styles.title}>{title}</div>
 
-      {activeMenu !== 'main' && (
-        <Button
-          type="icon"
-          label="X"
-          onClick={() => setActiveMenu('main')}
-          className={styles.backButton}
-        />
-      )}
-
-      {activeMenu === 'keybinds' && (
+      {/* {activeMenu === 'keybinds' && (
         <div className={styles.menu}>
           <SettingsKeybinds className={styles.section} />
           <SettingsControllers className={styles.section} />
         </div>
-      )}
+      )} */}
 
       {activeMenu === 'graphics' && (
         <div className={styles.menu}>
           <div className={styles.menuHeading}>Field of View</div>
-          <InputSlider value={fov} setValue={setFov} min={70} max={120} />
+          <InputSlider
+            value={config.fov}
+            setValue={(fov) => config.update({ fov })}
+            min={70}
+            max={120}
+          />
 
           <div className={styles.menuHeading}>Show Wireframes</div>
-          <InputToggle value={showWireframes} setValue={setShowWireframes} />
+          <InputToggle
+            value={config.showWireframes}
+            setValue={(showWireframes) => config.update({ showWireframes })}
+          />
 
           <div className={styles.menuHeading}>Show Physics Debug</div>
-          <InputToggle value={debugPhysics} setValue={setDebugPhysics} />
+          <InputToggle
+            value={config.showPhysicsDebug}
+            setValue={(showPhysicsDebug) => config.update({ showPhysicsDebug })}
+          />
 
           <div className={styles.menuHeading}>Day/Night Cycle</div>
           <InputToggle
-            value={dayNightCycle}
-            setValue={() => {
-              setDayNightCycle(!dayNightCycle)
-            }}
+            value={config.dayNightCycle}
+            setValue={(dayNightCycle) => config.update({ dayNightCycle })}
           />
 
           <div className={styles.menuHeading}>Day/Night Cycle Speed</div>
           <InputSlider
-            value={dayNightCycleSpeed * 100}
-            setValue={(value) => setDayNightCycleSpeed(value / 100)}
-            min={1}
+            value={config.dayNightCycleSpeed}
+            setValue={(dayNightCycleSpeed) => config.update({ dayNightCycleSpeed })}
+            min={100}
             max={500}
           />
         </div>
@@ -105,7 +91,7 @@ export const PauseMenu = (): JSX.Element | null => {
 
       {activeMenu === 'main' && (
         <div className={styles.buttons}>
-          <button onClick={() => setIsPaused(false)} className={styles.button}>
+          <button onClick={() => game.setIsPaused(false)} className={styles.button}>
             Resume
           </button>
 

@@ -1,0 +1,57 @@
+.container {
+  backdrop-filter: blur(10px);
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+
+  .header {
+    font-size: vars.$font-size-display;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+
+    .headerBackButton {
+      font-size: vars.$font-size-display;
+      position: absolute;
+      left: vars.$spacing-primary;
+      height: 100%;
+    }
+
+    .headerTitle {
+      font-size: vars.$font-size-display;
+    }
+  }
+
+  .row {
+    flex-direction: row;
+    gap: vars.$spacing-primary;
+    padding: vars.$spacing-primary;
+    gap: vars.$spacing-primary;
+    flex: 1;
+
+    .buttons {
+      gap: vars.$spacing-primary;
+      width: 100%;
+      font-size: vars.$font-size-h1;
+      flex: 1;
+      justify-content: flex-start;
+    }
+
+    .content {
+      flex: 3;
+      gap: vars.$spacing-primary;
+      background-color: vars.$color-background-translucent;
+      padding: vars.$spacing-primary;
+      border-radius: vars.$roundness;
+      overflow: auto;
+    }
+
+    .heading {
+      font-size: vars.$font-size-h2;
+      margin-bottom: calc(vars.$spacing-primary / 2 * -1);
+    }
+  }
+}

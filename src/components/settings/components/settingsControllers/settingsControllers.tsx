@@ -3,11 +3,10 @@ import * as React from 'react'
 import { ControllerState, useControllerStore } from 'store'
 import { classes } from 'utils'
 
-import { SettingsSectionHeader } from '../settingsSectionHeader/settingsSectionHeader'
 import styles from './styles.module.scss'
 import { Props } from './types'
 
-export const SettingsControllers = ({ className }: Props): JSX.Element => {
+export const SettingsControllers = ({ headingClassName }: Props): JSX.Element => {
   const controllers = useControllerStore()
 
   const render = React.useMemo(() => {
@@ -32,10 +31,8 @@ export const SettingsControllers = ({ className }: Props): JSX.Element => {
   }, [controllers])
 
   return (
-    <div className={classes(styles.container, className)}>
-      <SettingsSectionHeader label="Controllers" />
-
+    <>
       <div className={styles.controllers}>{render}</div>
-    </div>
+    </>
   )
 }

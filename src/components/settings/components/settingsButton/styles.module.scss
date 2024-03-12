@@ -1,0 +1,22 @@
+.container {
+  padding: vars.$spacing-primary;
+  border-radius: vars.$roundness;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  font-size: vars.$font-size-h1;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+
+  &:active {
+    scale: 0.99;
+  }
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+}
+
+.active {
+  background-color: vars.$color-primary;
+}

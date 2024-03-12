@@ -3,7 +3,7 @@ import { ButtonProps } from './types'
 import styles from './styles.module.scss'
 
 export const Button = (props: ButtonProps): JSX.Element => {
-  const { label, onClick, onMouseOver, type, className } = props
+  const { label, onClick, onMouseOver, type = 'default', className } = props
 
   return (
     <button

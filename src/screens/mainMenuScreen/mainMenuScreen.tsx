@@ -5,7 +5,6 @@ import { classes, navigate } from 'utils'
 import { gameName } from 'config'
 import { Button } from 'components'
 import themeSong from 'assets/music/taranis.mp3'
-import backgroundImage from 'assets/images/background.jpg'
 
 import styles from './styles.module.scss'
 import { MainMenuScreenProps } from './types'
@@ -58,8 +57,6 @@ export const MainMenuScreen = ({ showClickToStart }: MainMenuScreenProps): JSX.E
 
   return (
     <>
-      <img src={backgroundImage} className={styles.backgroundImage} />
-
       {showClickToStart && (
         <div
           onClick={() => setShowMenu(true)}

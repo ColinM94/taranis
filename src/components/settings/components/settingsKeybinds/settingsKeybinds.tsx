@@ -6,7 +6,6 @@ import { keybindKeys } from 'consts'
 import { KeybindKey, keyNames } from 'config'
 import { Bind } from 'types'
 
-import { SettingsSectionHeader } from '../settingsSectionHeader/settingsSectionHeader'
 import { Props } from './types'
 import styles from './styles.module.scss'
 
@@ -15,7 +14,7 @@ type SelectedOption = {
   index: number
 }
 
-export const SettingsKeybinds = ({ className }: Props): JSX.Element => {
+export const SettingsKeybinds = (props: Props): JSX.Element => {
   const input = useInput()
 
   const [selectedOption, setSelectedOption] = React.useState<SelectedOption | null>(null)
@@ -116,9 +115,7 @@ export const SettingsKeybinds = ({ className }: Props): JSX.Element => {
   }, [input, selectedOption])
 
   return (
-    <div className={classes(styles.container, className)}>
-      <SettingsSectionHeader label="Keybinds" onReset={handleReset} />
-
+    <div className={styles.container}>
       <div className={classes(styles.headerRow, styles.row)}>
         <div className={styles.rowLabel}>Action</div>
         <div className={styles.rowValue}>#1</div>

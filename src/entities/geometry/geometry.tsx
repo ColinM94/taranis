@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useGameStore } from 'store'
+import { useConfigStore } from 'store'
 
 import { GeometryProps } from './type'
 import { BackSide, DoubleSide, FrontSide, Mesh } from 'three'
@@ -7,7 +7,7 @@ import { BackSide, DoubleSide, FrontSide, Mesh } from 'three'
 export const Geometry = React.forwardRef((props: GeometryProps, ref: React.Ref<Mesh> | null) => {
   const { type, size, color, wireframe, side, transparent, ...rest } = props
 
-  const { showWireframes } = useGameStore()
+  const { showWireframes } = useConfigStore()
 
   const meshSide = React.useMemo(() => {
     if (props.side === 'front') {
