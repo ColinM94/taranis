@@ -30,13 +30,18 @@
     flex-direction: row;
     gap: vars.$spacing-primary;
     padding: vars.$spacing-primary;
-    width: min(100%, vars.$breakpoint-extra);
+    padding-left: vars.$spacing-primary * 4;
+    padding-right: vars.$spacing-primary * 4;
+    width: 100%;
+    flex: 1;
+    overflow: auto;
 
     .buttons {
       gap: vars.$spacing-primary;
       width: 100%;
       font-size: vars.$font-size-h1;
-      flex: 1;
+      width: 350px;
+      max-width: 20%;
       justify-content: flex-start;
     }
 
@@ -46,12 +51,20 @@
       padding: vars.$spacing-primary;
       border-radius: vars.$roundness;
       overflow: auto;
+
       flex: 2;
+      overflow-x: hidden;
     }
 
     .heading {
       font-size: vars.$font-size-h2;
       margin-bottom: calc(vars.$spacing-primary / 2 * -1);
     }
+  }
+
+  .bottomButtons {
+    background-color: vars.$color-background-translucent;
+    padding: vars.$spacing-primary;
+    width: 100%;
   }
 }

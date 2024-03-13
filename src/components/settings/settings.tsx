@@ -46,11 +46,13 @@ export const Settings = (props: Props) => {
             isActive={activeMenu === 'graphics'}
             onClick={() => setActiveMenu('graphics')}
           />
+
           <SettingsButton
             label="Keybinds"
             isActive={activeMenu === 'keybinds'}
             onClick={() => setActiveMenu('keybinds')}
           />
+
           <SettingsButton
             label="Controllers"
             isActive={activeMenu === 'controllers'}
@@ -67,6 +69,14 @@ export const Settings = (props: Props) => {
             <SettingsControllers headingClassName={styles.heading} />
           )}
         </div>
+      </div>
+      <div className={styles.bottomButtons}>
+        <Button
+          label="Save"
+          onClick={function (): void {
+            throw new Error('Function not implemented.')
+          }}
+        />
       </div>
     </div>
   )

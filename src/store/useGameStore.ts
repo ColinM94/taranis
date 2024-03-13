@@ -21,7 +21,7 @@ interface GameActions {
 export const useGameStore = createZustandStore<GameState & GameActions>({
   name: 'game',
   data: (set) => ({
-    activeScreen: { name: 'settings' },
+    activeScreen: { name: 'game' },
     setActiveScreen: (name, params): void =>
       set({
         activeScreen: {

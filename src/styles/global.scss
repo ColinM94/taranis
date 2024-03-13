@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "VT323";
-  src: url("assets/fonts/VT323-Regular.ttf");
+  font-family: 'VT323';
+  src: url('assets/fonts/VT323-Regular.ttf');
 }
 
 head {
@@ -34,8 +34,27 @@ body {
   width: 100%;
   max-width: 100%;
 
+  // ::-webkit-scrollbar {
+  //   display: none;
+  // }
+
   ::-webkit-scrollbar {
-    display: none;
+    width: 10px;
+    border-radius: vars.$roundness;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: vars.$color-background-translucent;
+    border-radius: vars.$roundness;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: vars.$color-surface;
+    border-radius: vars.$roundness;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: vars.$color-surface;
   }
 }
 
@@ -46,7 +65,7 @@ svg {
 }
 
 body {
-  font-family: "VT323", Calibri, "Trebuchet MS", sans-serif;
+  font-family: 'VT323', Calibri, 'Trebuchet MS', sans-serif;
   color: vars.$color-text-primary;
   background-color: vars.$color-background;
   line-height: 1.2;

@@ -30,7 +30,7 @@ const Cubes = () => {
       const newCubes: JSX.Element[] = []
 
       for (let i = 0; i < 250; i++) {
-        newCubes.push(<Cube position={randomPosition()} key={cubes.length + i} />)
+        newCubes.push(<Cube position={[0, 2, 0]} key={cubes.length + i} />)
       }
 
       setCubes((prev) => {
@@ -65,10 +65,10 @@ const Spheres = () => {
   const [spheres, setSpheres] = React.useState<JSX.Element[]>([])
 
   React.useEffect(() => {
-    const unsubscribe = input.createCallback('attack', () => {
+    const unsubscribe = input.createCallback('attackSecondary', () => {
       const newSpheres: JSX.Element[] = []
 
-      for (let i = 0; i < 250; i++) {
+      for (let i = 0; i < 1; i++) {
         newSpheres.push(<Sphere position={randomPosition()} key={spheres.length + i} />)
       }
 

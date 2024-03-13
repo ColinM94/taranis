@@ -1,30 +1,22 @@
 .container {
   background-color: vars.$color-surface;
-  width: 100%;
   height: 50px;
-  max-width: 200px;
   border-radius: vars.$roundness;
   flex-direction: row;
   overflow: hidden;
   cursor: pointer;
+  justify-content: flex-end;
 
   .option {
     flex: 1;
     font-size: vars.$font-size-h2;
     align-items: center;
     justify-content: center;
+    width: 200px;
   }
 
-  .option1 {
-    @extend .option;
-  }
-
-  .option2 {
-    @extend .option;
-  }
-
-  .option3 {
-    @extend .option;
+  .optionActive {
+    background-color: vars.$color-primary;
   }
 
   .knob {
@@ -38,9 +30,9 @@
     margin-left: auto;
     background-color: vars.$color-primary;
 
-    animation: activeate 0.25s linear forwards;
+    animation: activate 0.25s linear forwards;
 
-    @keyframes activeate {
+    @keyframes activate {
       0% {
         left: 0;
       }
