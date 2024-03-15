@@ -12,7 +12,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: vars.$color-background-translucent;
 
     .headerBackButton {
       font-size: vars.$font-size-display;
@@ -60,11 +60,5 @@
       font-size: vars.$font-size-h2;
       margin-bottom: calc(vars.$spacing-primary / 2 * -1);
     }
-  }
-
-  .bottomButtons {
-    background-color: vars.$color-background-translucent;
-    padding: vars.$spacing-primary;
-    width: 100%;
   }
 }

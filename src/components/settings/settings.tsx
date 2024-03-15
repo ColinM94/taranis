@@ -14,7 +14,7 @@ import { Props } from './types'
 
 type Menu = 'graphics' | 'keybinds' | 'controllers'
 
-export const Settings = (props: Props) => {
+export const Settings = (props: Props): JSX.Element => {
   const [activeMenu, setActiveMenu] = React.useState<Menu>('graphics')
   const game = useGameStore()
 
@@ -23,23 +23,23 @@ export const Settings = (props: Props) => {
     game.setIsPaused(false)
   }
 
+  const handleBack = () => {
+    if (props.onBackClick) props.onBackClick()
+    else if (props.type === 'mainMenu') navigate('mainMenu')
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <Button
-          type="icon"
-          label="<"
-          onClick={() => navigate('mainMenu')}
-          className={styles.headerBackButton}
-        />
+        <Button type="icon" label="<" onClick={handleBack} className={styles.headerBackButton} />
         <div className={styles.headerTitle}>Settings</div>
       </div>
 
       <div className={styles.row}>
         <div className={styles.buttons}>
-          {props.type === 'pauseMenu' && (
+          {/* {props.type === 'pauseMenu' && (
             <SettingsButton label="Resume" onClick={() => game.update({ isPaused: false })} />
-          )}
+          )} */}
 
           <SettingsButton
             label="Graphics"
@@ -59,7 +59,7 @@ export const Settings = (props: Props) => {
             onClick={() => setActiveMenu('controllers')}
           />
 
-          {props.type === 'pauseMenu' && <SettingsButton label="Quit Game" onClick={handleQuit} />}
+          {/* {props.type === 'pauseMenu' && <SettingsButton label="Quit Game" onClick={handleQuit} />} */}
         </div>
 
         <div className={styles.content}>
@@ -69,14 +69,6 @@ export const Settings = (props: Props) => {
             <SettingsControllers headingClassName={styles.heading} />
           )}
         </div>
-      </div>
-      <div className={styles.bottomButtons}>
-        <Button
-          label="Save"
-          onClick={function (): void {
-            throw new Error('Function not implemented.')
-          }}
-        />
       </div>
     </div>
   )
